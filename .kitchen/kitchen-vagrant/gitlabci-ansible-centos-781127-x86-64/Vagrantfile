@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |c|
+  c.berkshelf.enabled = false if Vagrant.has_plugin?("vagrant-berkshelf")
+  c.vm.box = "ansible-centos-7.8.1127-x86_64"
+  c.vm.box_url = "file:///Users/lindsworthgarvey/vagrantRepo/ansible-centos-7.8.1127-x86_64"
+  c.vm.hostname = "usctvltstgitlbci01v.symbridgedev.com"
+  c.vm.network(:private_network, {:ip=>"10.13.3.5"})
+  c.vm.network(:forwarded_port, {:guest=>80, :host=>8080})
+  c.vm.network(:forwarded_port, {:guest=>443, :host=>8443})
+  c.vm.synced_folder ".", "/vagrant", disabled: true
+  c.vm.synced_folder "/Users/lindsworthgarvey/symbridgeRepo/ansiblePlaybook", "/ansiblePlaybook", nil
+  c.vm.synced_folder "/Users/lindsworthgarvey/Downloads/Software", "/instImages", nil
+  c.vm.provider :virtualbox do |p|
+    p.name = "kitchen-ansible-gitlab-cicd-gitlabci-ansible-centos-781127-x86-64-4af17f34-abf6-48cc-9ba1-dca54cf42c29"
+    p.customize ["modifyvm", :id, "--audio", "none"]
+    p.customize ["modifyvm", :id, "--cpus", "2"]
+    p.customize ["modifyvm", :id, "--memory", "2048"]
+    p.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+end

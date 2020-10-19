@@ -1,0 +1,1 @@
+{"virtualbox":{"/ansiblePlaybook":{"guestpath":"/ansiblePlaybook","hostpath":"/Users/lindsworthgarvey/symbridgeRepo/ansiblePlaybook","disabled":false,"__vagrantfile":true},"/instImages":{"guestpath":"/instImages","hostpath":"/Users/lindsworthgarvey/Downloads/Software","disabled":false,"__vagrantfile":true}}}

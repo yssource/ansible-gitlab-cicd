@@ -1,0 +1,7 @@
+---
+hostname: 127.0.0.1
+port: '2222'
+username: vagrant
+ssh_key: "/Users/lindsworthgarvey/symbridgeRepo/ansiblePlaybook/ansible-gitlab-cicd/.kitchen/kitchen-vagrant/gitlabci-ansible-centos-781127-x86-64/.vagrant/machines/default/virtualbox/private_key"
+last_action: converge
+last_error: 
