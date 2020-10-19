@@ -1,0 +1,11 @@
+---
+
+- name: service restart redis
+  service:
+    name: redis
+    state: restarted
+
+- name: service restart postfix
+  service:
+    name: postfix
+    state: restarted

@@ -1,0 +1,23 @@
+---
+  #
+  # Import tasks
+  #
+
+- name: Import docker role
+  import_role:
+    name: docker
+  tags: ['configDocker', 'installDocker']
+
+# - name: Set Targeted SeLinux Policy
+#   selinux:
+#     policy: targeted
+#     state: permissive
+
+- import_tasks: configure-firewalld.yml
+  tags: ['configHost']
+
+- import_tasks: configure-host.yml
+  tags: ['configHost']
+
+- import_tasks: install-packages.yml
+  tags: ['installPackages']
