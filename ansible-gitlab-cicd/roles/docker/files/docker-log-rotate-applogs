@@ -1,0 +1,5 @@
+#
+# Ansible Managed
+#    Run log management every 30 minutes
+#
+*/30 * * * * root /usr/sbin/logrotate /etc/logrotate.d/docker-log-rotate

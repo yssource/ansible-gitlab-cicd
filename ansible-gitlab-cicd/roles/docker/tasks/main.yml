@@ -1,0 +1,9 @@
+---
+  #
+  # file: roles/docker/tasks/main.yml
+  #
+- import_tasks: install-packages.yml
+  tags: ['installPackages']
+
+- import_tasks: configure.yml
+  tags: docker
