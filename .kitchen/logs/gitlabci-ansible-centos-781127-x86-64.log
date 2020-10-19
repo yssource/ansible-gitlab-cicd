@@ -1,0 +1,169 @@
+I, [2020-10-23T16:53:32.591429 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: -----> Converging <gitlabci-ansible-centos-781127-x86-64>...
+I, [2020-10-23T16:53:32.591897 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing files for transfer
+I, [2020-10-23T16:53:32.591952 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing playbook
+I, [2020-10-23T16:53:32.592303 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing inventory
+I, [2020-10-23T16:53:32.592349 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing modules
+I, [2020-10-23T16:53:32.592556 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: nothing to do for modules
+I, [2020-10-23T16:53:32.592593 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing roles
+I, [2020-10-23T16:53:32.608080 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing ansible.cfg file
+I, [2020-10-23T16:53:32.608192 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Empty ansible.cfg generated
+I, [2020-10-23T16:53:32.608364 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing group_vars
+I, [2020-10-23T16:53:32.608538 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: nothing to do for group_vars
+I, [2020-10-23T16:53:32.608568 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing additional_copy_path
+I, [2020-10-23T16:53:32.608717 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing host_vars
+I, [2020-10-23T16:53:32.608886 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: nothing to do for host_vars
+I, [2020-10-23T16:53:32.608920 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing hosts file
+I, [2020-10-23T16:53:32.609074 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing spec
+I, [2020-10-23T16:53:32.609177 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: nothing to do for spec
+I, [2020-10-23T16:53:32.609210 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing library plugins
+I, [2020-10-23T16:53:32.609416 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: nothing to do for library plugins
+I, [2020-10-23T16:53:32.609448 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing callback plugins
+I, [2020-10-23T16:53:32.609660 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: nothing to do for callback plugins
+I, [2020-10-23T16:53:32.609689 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing filter_plugins
+I, [2020-10-23T16:53:32.609912 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: nothing to do for filter_plugins
+I, [2020-10-23T16:53:32.609942 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing lookup_plugins
+I, [2020-10-23T16:53:32.610145 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: nothing to do for lookup_plugins
+I, [2020-10-23T16:53:32.610178 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing ansible vault password
+I, [2020-10-23T16:53:32.610495 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Preparing additional_ssh_private_keys
+I, [2020-10-23T16:53:32.610600 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: nothing to do for additional_ssh_private_keys
+I, [2020-10-23T16:53:32.610629 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Finished Preparing files for transfer
+I, [2020-10-23T16:53:32.610840 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Installing ansible, will try to determine platform os
+I, [2020-10-23T16:53:32.810572 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Transferring files to <gitlabci-ansible-centos-781127-x86-64>
+I, [2020-10-23T16:53:34.042478 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:34.042535 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: PLAY [all] *********************************************************************
+I, [2020-10-23T16:53:34.066517 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:34.066569 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [Gathering Facts] *********************************************************
+I, [2020-10-23T16:53:34.849030 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:34.876369 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:34.876418 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Install common packages with yum] *******************************
+I, [2020-10-23T16:53:36.226259 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:36.251287 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:36.251337 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Discover if [/etc/yum.repos.d/docker-ce.repo] exists] ***********
+I, [2020-10-23T16:53:36.582297 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:36.606922 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:36.606979 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Add Docker repo] ************************************************
+I, [2020-10-23T16:53:36.627234 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;36mskipping: [localhost][0m
+I, [2020-10-23T16:53:36.650278 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:36.650330 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Create /etc/systemd/system/docker.service.d] ********************
+I, [2020-10-23T16:53:36.901912 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:36.927934 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:36.927990 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Install docker systemd override] ********************************
+I, [2020-10-23T16:53:37.157329 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:37.170039 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:37.170088 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : systemd daemon-reload] ******************************************
+I, [2020-10-23T16:53:37.607305 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:37.634752 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:37.634822 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Install docker-ce and supporting utils] *************************
+I, [2020-10-23T16:53:39.595367 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:39.617000 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:39.617051 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : docker-ce version currently installed] **************************
+I, [2020-10-23T16:53:40.029469 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;33mchanged: [localhost][0m
+I, [2020-10-23T16:53:40.053623 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:40.053679 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : service | {{ item }}] *******************************************
+I, [2020-10-23T16:53:40.236754 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item=docker)[0m
+I, [2020-10-23T16:53:40.253892 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:40.253945 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Create [ {/apps,/etc}/docker ]] *********************************
+I, [2020-10-23T16:53:40.419210 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item={u'dst': u'/etc/docker', u'group': u'docker', u'mode': u'0700', u'state': u'directory'})[0m
+I, [2020-10-23T16:53:40.527438 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item={u'dst': u'/apps/docker', u'group': u'docker', u'mode': u'0711', u'state': u'directory'})[0m
+I, [2020-10-23T16:53:40.550380 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:40.550432 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Determine is node is runing in swarm mode] **********************
+I, [2020-10-23T16:53:41.280729 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;33mchanged: [localhost][0m
+I, [2020-10-23T16:53:41.305222 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:41.305284 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Tune swarm [kernel] Settings] ***********************************
+I, [2020-10-23T16:53:41.327745 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;36mskipping: [localhost] => (item={u'name': u'net.core.somaxconn', u'value': 2048}) [0m
+I, [2020-10-23T16:53:41.364221 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:41.364269 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : template | {{ item }}] ******************************************
+I, [2020-10-23T16:53:41.384623 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;36mskipping: [localhost] => (item={u'dest': u'/etc/docker/daemon.json', u'src': u'daemon-swarm.json.j2', u'group': u'docker', u'mode': u'0644', u'owner': u'root'}) [0m
+I, [2020-10-23T16:53:41.413490 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:41.413556 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : template | {{ item }}] ******************************************
+I, [2020-10-23T16:53:41.740767 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item={u'dest': u'/etc/docker/daemon.json', u'src': u'daemon.json.j2', u'group': u'docker', u'mode': u'0644', u'owner': u'root'})[0m
+I, [2020-10-23T16:53:41.763396 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:41.763443 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : template | {{ item }}] ******************************************
+I, [2020-10-23T16:53:42.087042 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item={u'dest': u'/etc/rsyslog.d/docker.conf', u'src': u'docker.conf.j2', u'group': u'docker', u'mode': u'0644', u'owner': u'root'})[0m
+I, [2020-10-23T16:53:42.114716 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:42.114774 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : debug] **********************************************************
+I, [2020-10-23T16:53:42.166913 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => {[0m
+I, [2020-10-23T16:53:42.166973 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32m    "msg": " False"[0m
+I, [2020-10-23T16:53:42.166995 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32m}[0m
+I, [2020-10-23T16:53:42.214712 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:42.214774 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : service | {{ item }}] *******************************************
+I, [2020-10-23T16:53:42.239387 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;36mskipping: [localhost] => (item=docker) [0m
+I, [2020-10-23T16:53:42.267151 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:42.267209 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Copy docker config files] ***************************************
+I, [2020-10-23T16:53:42.539590 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item={u'dest': u'/etc/cron.d/dockerclean', u'src': u'dockerclean.cron', u'group': u'root', u'mode': u'0644', u'owner': u'root'})[0m
+I, [2020-10-23T16:53:42.568417 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:42.568478 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Copy log management config files] *******************************
+I, [2020-10-23T16:53:42.834194 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item={u'dest': u'/etc/logrotate.d/docker-log-rotate', u'src': u'docker-log-rotate'})[0m
+I, [2020-10-23T16:53:43.052778 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item={u'dest': u'/etc/cron.d/docker-log-rotate-applogs', u'src': u'docker-log-rotate-applogs'})[0m
+I, [2020-10-23T16:53:43.074580 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:43.074622 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Restart rsyslog] ************************************************
+I, [2020-10-23T16:53:43.274758 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;33mchanged: [localhost][0m
+I, [2020-10-23T16:53:43.298364 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:43.298420 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Check for excludes] *********************************************
+I, [2020-10-23T16:53:43.440591 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:43.458358 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:43.458398 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Set up initial excludes] ****************************************
+I, [2020-10-23T16:53:43.481380 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;36mskipping: [localhost][0m
+I, [2020-10-23T16:53:43.495281 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:43.495336 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Check for docker exclude] ***************************************
+I, [2020-10-23T16:53:43.639915 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:43.658741 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:43.658787 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [docker : Exclude docker in yum] ******************************************
+I, [2020-10-23T16:53:43.678677 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;36mskipping: [localhost][0m
+I, [2020-10-23T16:53:43.695828 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:43.695881 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Configure test-kitchen Firewalld Port {{ item }}] *************
+I, [2020-10-23T16:53:44.450706 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item=80/tcp)[0m
+I, [2020-10-23T16:53:44.735095 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item=443/tcp)[0m
+I, [2020-10-23T16:53:45.041501 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item=9090/tcp)[0m
+I, [2020-10-23T16:53:45.334850 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item=6379/tcp)[0m
+I, [2020-10-23T16:53:45.351274 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:45.351319 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Install common packages with yum] *****************************
+I, [2020-10-23T16:53:47.225164 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:47.250492 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:47.250545 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Get Helm Binary] **********************************************
+I, [2020-10-23T16:53:47.658330 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;33mchanged: [localhost][0m
+I, [2020-10-23T16:53:47.677440 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:47.677487 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Get NodeJS Repo Script] ***************************************
+I, [2020-10-23T16:53:47.827143 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:47.840557 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:47.840604 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Setup NodeJS Repository] **************************************
+I, [2020-10-23T16:53:50.315022 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;33mchanged: [localhost][0m
+I, [2020-10-23T16:53:50.336919 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:50.336956 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Install NodeJS] ***********************************************
+I, [2020-10-23T16:53:50.908890 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:50.932362 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:50.932426 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Get GitLab Repo] **********************************************
+I, [2020-10-23T16:53:51.096783 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:51.116175 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:51.116223 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Get GitLab Runner Repo] ***************************************
+I, [2020-10-23T16:53:51.268373 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:53:51.279668 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:51.279720 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Setup GitLab Repository] **************************************
+I, [2020-10-23T16:53:59.702923 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;33mchanged: [localhost][0m
+I, [2020-10-23T16:53:59.729848 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:53:59.729905 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Install Redis] ************************************************
+I, [2020-10-23T16:54:00.363798 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:54:00.385136 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:54:00.385179 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Enable Redis Service] *****************************************
+I, [2020-10-23T16:54:00.617107 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;33mchanged: [localhost] => (item=redis)[0m
+I, [2020-10-23T16:54:00.767803 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item=postfix)[0m
+I, [2020-10-23T16:54:00.787037 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:54:00.787098 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Install GitLab] ***********************************************
+I, [2020-10-23T16:54:02.383192 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost][0m
+I, [2020-10-23T16:54:02.407484 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:54:02.407547 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : Configure gitlab-ce] ******************************************
+I, [2020-10-23T16:54:20.240901 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;33mchanged: [localhost][0m
+I, [2020-10-23T16:54:20.268740 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:54:20.268812 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: TASK [gitlabci : debug] ********************************************************
+I, [2020-10-23T16:54:20.355795 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item=service restart redis) => {[0m
+I, [2020-10-23T16:54:20.355858 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32m    "msg": "GITLAB_ROOT_PASSWORD: .kitch3n(1gitl@b"[0m
+I, [2020-10-23T16:54:20.355898 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32m}[0m
+I, [2020-10-23T16:54:20.384315 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32mok: [localhost] => (item=service restart postfix) => {[0m
+I, [2020-10-23T16:54:20.384363 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32m    "msg": "GITLAB_ROOT_PASSWORD: .kitch3n(1gitl@b"[0m
+I, [2020-10-23T16:54:20.384380 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;32m}[0m
+I, [2020-10-23T16:54:20.386297 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:54:20.386349 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: PLAY RECAP *********************************************************************
+I, [2020-10-23T16:54:20.386369 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: [0;33mlocalhost[0m                  : [0;32mok=33  [0m [0;33mchanged=8   [0m unreachable=0    failed=0   
+I, [2020-10-23T16:54:20.386384 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: 
+I, [2020-10-23T16:54:20.554418 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Downloading files from <gitlabci-ansible-centos-781127-x86-64>
+I, [2020-10-23T16:54:20.559882 #23775]  INFO -- gitlabci-ansible-centos-781127-x86-64: Finished converging <gitlabci-ansible-centos-781127-x86-64> (0m47.97s).
