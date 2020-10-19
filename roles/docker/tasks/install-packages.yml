@@ -1,0 +1,31 @@
+---
+# file: roles/common/tasks/install-packages.yml
+
+- name: Install common packages with yum
+  yum:
+    name:
+      - bc
+      - lvm2
+      - iptraf
+      - sysstat
+      - rng-tools
+      - yum-utils
+      - logrotate
+      - epel-release
+      - device-mapper-persistent-data
+    state: present
+
+- name: Discover if [/etc/yum.repos.d/docker-ce.repo] exists
+  stat:
+    path: /etc/yum.repos.d/docker-ce.repo
+  register: docker_ce_repo
+
+- name: Add Docker repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  ignore_errors: true
+  args:
+    warn: false
+  register: add_docker_repo
+  when: not docker_ce_repo.stat.exists
+
+...

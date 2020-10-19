@@ -1,0 +1,4 @@
+---
+docker:
+  version: 19.03.13
+  compose: 1.18.0

@@ -1,0 +1,2 @@
+# Daily clean up of stopped containers and unused images
+0 1 * * * root /bin/docker system prune -af

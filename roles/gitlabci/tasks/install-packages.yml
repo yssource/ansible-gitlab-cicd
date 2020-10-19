@@ -1,0 +1,58 @@
+---
+#
+# Install supporting packages
+#
+
+- name: Install Redis
+  yum:
+    name:
+      - redis
+      - policycoreutils
+    state: present
+    enablerepo: remi
+
+- name: Enable Redis Service
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - [ 'redis','postfix' ]
+  tags: redisService
+
+- name: Install GitLab
+  yum:
+    name:
+      - gitlab-ce
+      - "{{ tmpDir }}/gitlab-runner_amd64.rpm"
+    state: present
+    enablerepo: gitlab_gitlab-ce
+
+- name: Configure gitlab-ce
+  shell: gitlab-ctl reconfigure
+  ignore_errors: true
+  args:
+    warn: true
+  environment:
+    EXTERNAL_URL: "https://{{ ansible_fqdn }}"
+    GITLAB_ROOT_PASSWORD: "{{ GitLab_Passwd }}"
+
+- debug:
+    msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
+
+# - name: Sleep for 300 seconds and continue with play
+#   wait_for:
+#     timeout: 300
+#   delegate_to: localhost
+
+# - name: Start gitlab
+#   shell: gitlab-ctl start
+#   ignore_errors: yes
+#   args:
+#     warn: true
+
+  notify: "{{ item }}"
+  with_items:
+    - service restart redis
+    - service restart postfix
+...
