@@ -1,0 +1,4 @@
+*.kitchen
+*.DS_Store
+*.retry
+Gemfile.lock

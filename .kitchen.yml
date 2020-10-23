@@ -20,18 +20,18 @@ verifier:
   ruby_bindir: /opt/chef/embedded/bin
 
 platforms:
-  - name: ansible-centos-7.8.1127-x86_64
+  - name: ansible-centos-7.8.2003-x86_64
     driver_config:
-      box: ansible-centos-7.8.1127-x86_64
-      box_url: file:///Users/lindsworthgarvey/vagrantRepo/ansible-centos-7.8.1127-x86_64
+      box: ansible-centos-7.8.2003-x86_64
+      box_url: file:///Users/lindsworthgarvey/curbStoneOps/vagrantRepo/ansible-centos-7.8.2003-x86_64
       synced_folders:
-        - [ "~/symbridgeRepo/ansiblePlaybook", "/ansiblePlaybook"]
+        - [ "~/curbStoneOps/ansiblePlaybook", "/ansiblePlaybook"]
         - [ "~/Downloads/Software", "/instImages"]
 
 suites:
   - name: gitlabci
     driver:
-      vm_hostname: usctvltstgitlbci01v.symbridgedev.com
+      vm_hostname: usctvltstgitlbci01v.curbstone.com
       customize:
         cpus: 2
         memory: 2048
@@ -42,7 +42,7 @@ suites:
         - ["forwarded_port", {guest: 443, host: 8443}]
         - ["forwarded_port", {guest: 9090, host: 9090}]
     provisioner:
-      hosts: ansible-centos-7.8.1127-x86_64
+      hosts: ansible-centos-7.8.2003-x86_64
       require_ansible_repo: true
       playbook: gitlabci.yml
       ansible_vault_password_file: [".kitchenCIvault"]
