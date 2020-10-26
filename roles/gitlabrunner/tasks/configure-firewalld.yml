@@ -1,0 +1,14 @@
+---
+- name: Configure test-kitchen Firewalld Port {{ item }}
+  firewalld:
+    port: "{{ item }}"
+    immediate: yes
+    permanent: true
+    state: enabled
+    zone: public
+  with_items:
+    - "80/tcp"
+    - "443/tcp"
+    - "9090/tcp"
+    - "6379/tcp"
+  tags: firewalld

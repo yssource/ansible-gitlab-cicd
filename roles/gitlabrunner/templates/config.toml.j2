@@ -1,0 +1,21 @@
+concurrent = 1
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "{{ ansible_fqdn }}"
+  url = "http://localhost:8080"
+  token = "{{ gitlabrunner-token }}"
+  executor = "shell"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+  executor = "ssh"
+  [runners.ssh]
+    host = "{{ ansible_fqdn }}"
+    port = "22"
+    identity_file = "/home/gitlab-runner/.ssh/id_rsa"

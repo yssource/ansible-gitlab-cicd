@@ -50,4 +50,5 @@
   with_items:
     - service restart redis
     - service restart postfix
+    - service restart firewalld
 ...

@@ -1,0 +1,12 @@
+#
+# Allow gitlab-runner to run any commands as root
+#
+
+Defaults:dockermgr !requiretty
+gitlab-runner   ALL=(ALL)       NOPASSWD:ALL
+
+#
+# Allow members of the gitlab-runner group to run any commands as root
+#
+
+%gitlab-runner ALL = NOPASSWD:/bin/su - gitlab-runner
