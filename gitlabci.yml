@@ -7,4 +7,3 @@
   remote_user: root
   roles:
     - gitlabci
-    - gitlabrunner

@@ -24,7 +24,7 @@
   yum:
     name:
       - gitlab-ce
-      # - "{{ tmpDir }}/gitlab-runner_amd64.rpm"
+      - "{{ tmpDir }}/gitlab-runner_amd64.rpm"
     state: present
     enablerepo: gitlab_gitlab-ce
 
@@ -34,6 +34,9 @@
     regexp: "^external_url 'http://gitlab.example.com'"
     line: external_url 'http://{{ ansible_fqdn }}'
 
+- debug:
+    msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
+
 - name: Configure gitlab-ce
   shell: gitlab-ctl reconfigure
   ignore_errors: true
@@ -42,9 +45,6 @@
   environment:
     EXTERNAL_URL: "https://{{ ansible_fqdn }}"
     GITLAB_ROOT_PASSWORD: "{{ GitLab_Passwd }}"
-
-# - debug:
-#     msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
 
   notify: "{{ item }}"
   with_items:
