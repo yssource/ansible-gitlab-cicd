@@ -20,11 +20,11 @@
     - [ 'redis','postfix' ]
   tags: redisService
 
-- name: Install GitLab
+- name: Install GitLab-CE
   yum:
     name:
       - gitlab-ce
-      - "{{ tmpDir }}/gitlab-runner_amd64.rpm"
+      # - "{{ tmpDir }}/gitlab-runner_amd64.rpm"
     state: present
     enablerepo: gitlab_gitlab-ce
 
@@ -43,11 +43,12 @@
     EXTERNAL_URL: "https://{{ ansible_fqdn }}"
     GITLAB_ROOT_PASSWORD: "{{ GitLab_Passwd }}"
 
-- debug:
-    msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
+# - debug:
+#     msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
 
   notify: "{{ item }}"
   with_items:
     - service restart redis
     - service restart postfix
+    - service restart firewalld
 ...
