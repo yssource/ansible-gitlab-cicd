@@ -29,7 +29,7 @@ platforms:
         - [ "~/Downloads/Software", "/instImages"]
 
 suites:
-  - name: gitlabci
+  - name: gitlab-ci
     driver:
       vm_hostname: usctvltstgitlbci01v.curbstone.com
       customize:
