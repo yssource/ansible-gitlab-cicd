@@ -11,6 +11,12 @@ The initial password for the user root can be set at the installation time with 
 GITLAB_ROOT_PASSWORD="<strongpassword>" 
 EXTERNAL_URL="http://gitlab.exmaple.com" yum install gitlab-ce
 ```
+Get API Token for Registering gitlab-runner
+---------------------------------------
+```
+set -x
+gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: 'root'); token.set_token('xxGitLabAP1-Token12'); token.save!"
+```
 
 Registering GitLab runner
 ==============================
