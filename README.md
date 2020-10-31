@@ -1,5 +1,8 @@
-# Setting initial root password on installation
--------------------------------------------------
+# ansible-gitlab-cicd
+--------------------------------------
+
+Setting initial root password on installation
+===============================================
 # https://docs.gitlab.com/omnibus/settings/configuration.html
 
 The initial password for the user root can be set at the installation time with the environment variable `GITLAB_ROOT_PASSWORD.
@@ -20,7 +23,7 @@ click Overview > Runners
 # https://docs.gitlab.com/runner/register/
 
 
-Installinng helm
+Installing helm
 --------------------
 
 Download Helm v3.3.4. The common platform binaries are here:
