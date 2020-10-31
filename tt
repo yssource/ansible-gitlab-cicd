@@ -1,0 +1,10 @@
+set -x
+
+
+#gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: 'root'); token.set_token('.kitch3n(1gitl@b'); token.save!"
+gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: 'root'); token.set_token('usctvltstgitlbci01v'); token.save!"
+
+curl --request POST "https://gitlab.example.com/api/v4/runners" --form "token=<registration_token>" --form "description=test-1-20150125-test" --form "tag_list=ruby,mysql,tag1,tag2"
+
+curl --request POST "https://gitlab.example.com/api/v4/runners" --form "token=<registration_token>" --form "description=test-1-20150125-test" --form "tag_list=ruby,mysql,tag1,tag2"
+

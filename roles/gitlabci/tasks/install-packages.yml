@@ -46,6 +46,9 @@
     EXTERNAL_URL: "https://{{ ansible_fqdn }}"
     GITLAB_ROOT_PASSWORD: "{{ GitLab_Passwd }}"
 
+- debug:
+    msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
+
   notify: "{{ item }}"
   with_items:
     - service restart redis
