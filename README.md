@@ -8,14 +8,57 @@ Setting initial root password on installation
 The initial password for the user root can be set at the installation time with the environment variable `GITLAB_ROOT_PASSWORD.
 
 ```Example:
-GITLAB_ROOT_PASSWORD="<strongpassword>" 
+GITLAB_ROOT_PASSWORD="<strongpassword>"
 EXTERNAL_URL="http://gitlab.exmaple.com" yum install gitlab-ce
 ```
 Get API Token for Registering gitlab-runner
----------------------------------------
+--------------------------------------------
+Token Must be exactly 20 characters
+
 ```
 set -x
-gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: 'root'); token.set_token('xxGitLabAP1-Token12'); token.save!"
+gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository, :sudo], name: 'root'); token.set_token('vu1zFo5okhrn69uBLApq'); token.save!"
+```
+
+```
+[root@usctvltstgitlbci01v ~]# curl -s --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" http://localhost:80/api/v4/user | jq '.'
+{
+  "id": 1,
+  "name": "Administrator",
+  "username": "root",
+  "state": "active",
+  "avatar_url": "https://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=80&d=identicon",
+  "web_url": "http://usctvltstgitlbci01v.curbstone.com/root",
+  "created_at": "2020-10-31T13:45:32.383Z",
+  "bio": "",
+  "bio_html": "",
+  "location": null,
+  "public_email": "",
+  "skype": "",
+  "linkedin": "",
+  "twitter": "",
+  "website_url": "",
+  "organization": null,
+  "job_title": "",
+  "work_information": null,
+  "last_sign_in_at": "2020-10-31T14:25:52.988Z",
+  "confirmed_at": "2020-10-31T13:45:32.224Z",
+  "last_activity_on": "2020-10-31",
+  "email": "admin@example.com",
+  "theme_id": 1,
+  "color_scheme_id": 1,
+  "projects_limit": 100000,
+  "current_sign_in_at": "2020-10-31T14:25:52.988Z",
+  "identities": [],
+  "can_create_group": true,
+  "can_create_project": true,
+  "two_factor_enabled": false,
+  "external": false,
+  "private_profile": false,
+  "is_admin": true,
+  "note": null
+}
+[root@usctvltstgitlbci01v ~]#
 ```
 
 Registering GitLab runner
