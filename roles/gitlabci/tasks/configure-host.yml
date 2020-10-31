@@ -20,6 +20,14 @@
       - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
 
+- name: Create Staging Dir
+  file:
+    path: "{{ stageDir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 755
+
 - name: Get NodeJS Repo Script
   get_url:
     url: https://rpm.nodesource.com/setup_10.x
