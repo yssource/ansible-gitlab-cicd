@@ -27,6 +27,11 @@
       - "{{ tmpDir }}/gitlab-runner_amd64.rpm"
     state: present
     enablerepo: gitlab_gitlab-ce
+    
+#
+# TODO:
+#    Search for Regex before attempting to replace it for idempotency
+#
 
 - name: Set Gitlab EXTERNAL_URL
   lineinfile:
@@ -45,6 +50,9 @@
   environment:
     EXTERNAL_URL: "https://{{ ansible_fqdn }}"
     GITLAB_ROOT_PASSWORD: "{{ GitLab_Passwd }}"
+
+- debug:
+    msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
 
   notify: "{{ item }}"
   with_items:

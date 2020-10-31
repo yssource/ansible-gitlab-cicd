@@ -2,3 +2,5 @@
 *.DS_Store
 *.retry
 Gemfile.lock
+.kitchen/
+.kitchen.local.yml

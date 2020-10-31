@@ -34,3 +34,23 @@ Download Helm v3.3.4. The common platform binaries are here:
 
 /var/opt/gitlab/.ssh/authorized_keys
 command="/opt/gitlab/embedded/service/gitlab-shell/bin/gitlab-shell key-1",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrp8iKsIqhMs9AatruTpYuNBubeEiKlGIg+1YQoD4eXggfcdrMo/B+Zl6OT1JVTk4que1P2hfXw1gQeayELHWhPFRYcMA/Qsnf96u/vOsthEMUYplBibBBx4umAvFjj9L2IzAixV/svst5gJVR/d6z5C5xz9mogLeN2HpIUMbSjsld4nKqZR2Q0CZskzjesr8YOwa1OcX3JeJ2BDdx/stEQzbI8yUrHX0x+2Vc8a8eCCvA5D6idF+wA6nBIwfojrWrW++bF9Dvyj2No7iLOYqhjqTf18ZEXbTlCwn2MJSXb1AFz2mKI28g8tKxdOEmfkY3XXYlBXtiDyVj2RMMDSWL
+
+Enable Prometheus Metrics
+=========================
+
+To enable prometheus metrics the monitoring endpoint/prometheus server's IP address must be whitelisted in /etc/gitlab/gitlab.rb config file as follows:
+```
+/etc/gitlab/gitlab.rb
+gitlab_rails['monitoring_whitelist'] = ['127.0.0.0/8', '192.168.0.1']
+
+```
+
+### For setting up different data storing directory
+###! Docs: https://docs.gitlab.com/omnibus/settings/configuration.html#storing-git-data-in-an-alternative-directory
+###! **If you want to use a single non-default directory to store git data use a
+###!   path that doesn't contain symlinks.**
+ git_data_dirs({
+   "default" => {
+     "path" => "/apps/gitlab/git-data"
+    }
+ })

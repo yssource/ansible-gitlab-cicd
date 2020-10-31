@@ -23,15 +23,15 @@ platforms:
   - name: ansible-centos-7.8.2003-x86_64
     driver_config:
       box: ansible-centos-7.8.2003-x86_64
-      box_url: file:///Users/lindsworthgarvey/vagrantRepo/ansible-centos-7.8.2003-x86_64
+      box_url: file:///Users/lindsworthgarvey/curbStoneOps/vagrantRepo/ansible-centos-7.8.2003-x86_64
       synced_folders:
-        - [ "~/symbridgeRepo/ansiblePlaybook", "/ansiblePlaybook"]
+        - [ "~/curbStoneOps/ansiblePlaybook", "/ansiblePlaybook"]
         - [ "~/Downloads/Software", "/instImages"]
 
 suites:
   - name: gitlab-ci
     driver:
-      vm_hostname: usctvltstgitlbci01v.curbstone.com
+      vm_hostname: usctvltstgitlbci01v.symbridgedev.com
       customize:
         cpus: 2
         memory: 2048
@@ -49,7 +49,7 @@ suites:
 
   - name: gitlab-runner
     driver:
-      vm_hostname: usctvltstgitlbrn01v.curbstone.com
+      vm_hostname: usctvltstgitlbci01v.symbridgedev.com
       customize:
         cpus: 1
         memory: 1024

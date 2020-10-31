@@ -4,7 +4,7 @@
   #
 - import_tasks: "{{ role_path }}/../config_local_hosts.yml"
   tags: ['configLocalHost', 'configEtcHosts']
-  
+
 - name: Import docker role
   import_role:
     name: docker
@@ -23,3 +23,6 @@
 
 - import_tasks: install-packages.yml
   tags: ['installPackages']
+
+- import_tasks: install-infracode-pkgs.yml
+  tags: ['installInfraCodePackages']
