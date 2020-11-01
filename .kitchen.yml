@@ -49,7 +49,7 @@ suites:
 
   - name: gitlab-runner
     driver:
-      vm_hostname: usctvltstgitlbci01v.curbstone.com
+      vm_hostname: usctvltstgitlbrn01v.curbstone.com
       customize:
         cpus: 1
         memory: 1024
