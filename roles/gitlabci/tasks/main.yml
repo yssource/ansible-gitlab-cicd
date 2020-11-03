@@ -10,11 +10,6 @@
     name: docker
   tags: ['configDocker', 'installDocker']
 
-# - name: Set Targeted SeLinux Policy
-#   selinux:
-#     policy: targeted
-#     state: permissive
-
 - import_tasks: configure-firewalld.yml
   tags: ['configHost']
 

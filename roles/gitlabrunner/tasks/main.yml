@@ -11,8 +11,8 @@
 - import_tasks: configure-firewalld.yml
   tags: ['configHostFw']
 
-- import_tasks: configure-runner.yml
-  tags: ['configRunnerHost']
-
 - import_tasks: install-runner-pkgs.yml
   tags: ['installRunnerPackages']
+
+- import_tasks: configure-runner.yml
+  tags: ['configRunnerHost']

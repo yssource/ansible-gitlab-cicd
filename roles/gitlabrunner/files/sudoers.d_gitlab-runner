@@ -1,12 +1,4 @@
+#
 # Allow gitlab-runner to run any commands as root
-
-Defaults   !visiblepw
-Defaults    always_set_home
-Defaults    match_group_by_gid
-Defaults    always_set_home
-Defaults    match_group_by_gid
-Defaults    env_reset
-Defaults    env_keep =  "SSH_AUTH_SOCK"
-Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin
-
-#gitlab-runner ALL=(ALL)  NOPASSWD: ALL
+#
+gitlab-runner ALL=(ALL)  NOPASSWD: ALL

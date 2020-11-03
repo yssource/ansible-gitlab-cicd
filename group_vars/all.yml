@@ -1,3 +1,7 @@
 ---
 localBin: /usr/local/bin
+stagingDir: "/tmp/instImages"
 helmVer:  "v3.3.4"
+registration_token: "vu1zFo5okhrn69uBLApq"
+initial_root_password: "{{ GitLab_Passwd }}"
+git_data_dir: "/apps/git-data"

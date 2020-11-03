@@ -72,6 +72,14 @@ Using the API to Register Gitlab-Runner
 [root@usctvltstgitlbci01v ~]# curl --request POST "https://localhost:80/api/v4/runners" --form "token=vu1zFo5okhrn69uBLApq" --form "description=localRunner" --form "tag_list=ruby,mysql,shell"
 ```
 
+```
+set -x
+
+gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: 'root'); token.set_token('vu1zFo5okhrn69uBLApq'); token.save!"
+
+curl --request POST "https://gitlab.example.com/api/v4/runners" --form "token=<registration_token>" --form "description=test-1-20150125-test" --form "tag_list=shell"
+```
+
 Manually Registering GitLab runner
 ==============================
 Obtain a regoistration token

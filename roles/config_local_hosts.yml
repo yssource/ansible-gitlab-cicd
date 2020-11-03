@@ -8,3 +8,11 @@
   with_items:
     - { ip: 10.13.3.5, fqdn: usctvltstgitlbci01v.symbridgedev.com, name: usctvltstgitlbci01v }
     - { ip: 10.13.3.6, fqdn: usctvltstgitlbrn01v.symbridgedev.com, name: usctvltstgitlbrn01v }
+
+- name: Configure gitlab-runner sudoers config
+  copy:
+    src: sudoers.d_gitlab-runner
+    dest: /etc/sudoers.d/gitlab-runner
+    owner: root
+    group: root
+    mode: 0400
