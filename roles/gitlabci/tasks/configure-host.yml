@@ -21,22 +21,23 @@
       - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
 
-# - name: Create Staging Dir
-#   file:
-#     path: "{{ stageDir }}"
-#     state: directory
-#     owner: root
-#     group: root
-#     mode: 755
+- name: Create Staging Dir
+  file:
+    path: "{{ stagingDir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 755
+
 
 - name: Get NodeJS Repo Script
   get_url:
     url: https://rpm.nodesource.com/setup_10.x
-    dest: /tmp/setup_10.x
+    dest: "{{ stagingDir}}/setup_10.x"
     mode: 0755
 
 - name: Setup NodeJS Repository
-  shell: /tmp/setup_10.x
+  shell: "{{ stagingDir }}/setup_10.x"
   ignore_errors: yes
   args:
     warn: yes
@@ -50,17 +51,17 @@
 - name: Get GitLab Repo
   get_url:
     url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
-    dest: /tmp/script.rpm.sh
+    dest: "{{ stagingDir }}/script.rpm.sh"
     mode: 0755
 
 - name: Get GitLab Runner Repo
   get_url:
     url: https://gitlab-runner-downloads.s3.amazonaws.com/latest/rpm/gitlab-runner_amd64.rpm
-    dest: /tmp/gitlab-runner_amd64.rpm
+    dest: "{{ stagingDir }}/gitlab-runner_amd64.rpm"
     mode: 0755
 
 - name: Setup GitLab Repository
-  shell: /tmp/script.rpm.sh
+  shell: "{{ stagingDir }}/script.rpm.sh"
   ignore_errors: yes
   args:
     warn: yes

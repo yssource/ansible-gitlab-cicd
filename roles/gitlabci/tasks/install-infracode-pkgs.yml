@@ -26,8 +26,8 @@
     mode: " {{ item.mode }}"
   with_items:
     - { url: 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.25.5/terragrunt_linux_amd64', dest: '{{ localBin }}/terragrunt', mode: '0755' }
-    - { url: 'https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip', dest: '{{ tmpDir }}', mode: '0755' }
-    - { url: 'https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz', dest: '{{ tmpDir }}', mode: '0755' }
+    - { url: 'https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip', dest: '{{ stagingDir }}', mode: '0755' }
+    - { url: 'https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz', dest: '{{ stagingDir }}', mode: '0755' }
 
 - name: "Unarchive {{ item }}"
   unarchive:
@@ -35,7 +35,7 @@
     dest: "{{ localBin }}"
     mode: 0755
   loop:
-    - "{{ tmpDir }}/terraform_0.13.5_linux_amd64.zip"
-    - "{{ tmpDir }}/helm-v3.3.4-linux-amd64.tar.gz"
+    - "{{ stagingDir }}/terraform_0.13.5_linux_amd64.zip"
+    - "{{ stagingDir }}/helm-v3.3.4-linux-amd64.tar.gz"
 
 ...

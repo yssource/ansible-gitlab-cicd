@@ -24,20 +24,39 @@
   yum:
     name:
       - gitlab-ce
-      - "{{ tmpDir }}/gitlab-runner_amd64.rpm"
+      - "{{ stagingDir }}/gitlab-runner_amd64.rpm"
     state: present
     enablerepo: gitlab_gitlab-ce
-    
+
+- name: Create GitLab Dir
+  file:
+    path: "/etc/gitlab"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Render gitlab-ce template
+  template:
+    src: gitlab.rb.j2
+    dest: /etc/gitlab/gitlab.rb
+    owner: root
+    group: root
+    mode: 0600
+
+#===============================================================================
 #
 # TODO:
 #    Search for Regex before attempting to replace it for idempotency
 #
 
-- name: Set Gitlab EXTERNAL_URL
-  lineinfile:
-    path: /etc/gitlab/gitlab.rb
-    regexp: "^external_url 'http://gitlab.example.com'"
-    line: external_url 'http://{{ ansible_fqdn }}'
+# - name: Set Gitlab EXTERNAL_URL
+#   lineinfile:
+#     path: /etc/gitlab/gitlab.rb
+#     regexp: "^external_url 'http://gitlab.example.com'"
+#     line: external_url 'http://{{ ansible_fqdn }}'
+#
+#===============================================================================
 
 - debug:
     msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
@@ -50,9 +69,6 @@
   environment:
     EXTERNAL_URL: "https://{{ ansible_fqdn }}"
     GITLAB_ROOT_PASSWORD: "{{ GitLab_Passwd }}"
-
-- debug:
-    msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
 
   notify: "{{ item }}"
   with_items:
