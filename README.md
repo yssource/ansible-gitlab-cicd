@@ -13,7 +13,7 @@ GITLAB_ROOT_PASSWORD="<strongpassword>"
 EXTERNAL_URL="http://gitlab.exmaple.com" yum install gitlab-ce
 ```
 
-Set API Token for Registering gitlab-runner
+Set API User Access Token 
 --------------------------------------------
 Token Must be exactly 20 characters
 
@@ -22,7 +22,7 @@ set -x
 gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository, :sudo], name: 'root'); token.set_token('vu1zFo5okhrn69uBLApq'); token.save!"
 ```
 
-Verify API TOKEN
+Verify API User Access Token
 
 ```
 [root@usctvltstgitlbci01v ~]# curl -s --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" http://localhost:80/api/v4/user | jq '.'
@@ -73,11 +73,11 @@ Using the API to Register Gitlab-Runner
 ```
 
 ```
-set -x
-
-gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository], name: 'root'); token.set_token('vu1zFo5okhrn69uBLApq'); token.save!"
-
-curl --request POST "https://gitlab.example.com/api/v4/runners" --form "token=<registration_token>" --form "description=test-1-20150125-test" --form "tag_list=shell"
+curl --request POST "https://gitlab.example.com/api/v4/runners" \
+     --form "token=<registration_token>" \
+     --form "description=test-1-20150125-test" \
+     --form "locked=false" \
+     --form "tag_list=shell"
 ```
 
 Manually Registering GitLab runner
@@ -86,7 +86,8 @@ Obtain a regoistration token
 Shared Runner:
 For a shared runner, have an administrator go to the GitLab Admin Area:
 http://<gitlab-url>
-click Overview > Runners
+==> Overview 
+  ==> Runners
 
 # https://docs.gitlab.com/runner/register/
 
