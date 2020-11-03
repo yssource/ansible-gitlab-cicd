@@ -73,7 +73,7 @@ Using the API to Register Gitlab-Runner
 ```
 
 ```
-curl --request POST "https://gitlab.example.com/api/v4/runners" \
+curl --request POST "https://{{ gitlabciUrl }}/api/v4/runners" \
      --form "token=<registration_token>" \
      --form "description={{ ansible_fqdn }}" \
      --form "locked=false" \
