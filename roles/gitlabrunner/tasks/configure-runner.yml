@@ -1,8 +1,8 @@
 ---
 - name: Register gitlab-runner
   shell:  curl --request POST "http://10.13.3.5/api/v4/runners" \
-               --form "token=vu1zFo5okhrn69uBLApq" \
-               --form "description={{ ansible_fqdn }}" \
+               --form "token=bKUpVXkKoTnKJW_UtKjk" \
+               --form "description=usctvltstgitlbrn01v.curbstone.com" \
                --form "tag_list=shell" \
                --form "locked=no" \
                --form "run_untagged=yes" \

@@ -125,3 +125,11 @@ gitlab_rails['monitoring_whitelist'] = ['127.0.0.0/8', '192.168.0.1']
      "path" => "/apps/gitlab/git-data"
     }
  })
+
+
+gitlab-runner register --tag-list shell \
+      -n -r bKUpVXkKoTnKJW_UtKjk \
+      --url http://usctvltstgitlbci01v.curbstone.com \
+      --run-untagged true \
+      --locked false \
+      --name usctvltstgitlbci01v.curbstone.com

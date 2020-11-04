@@ -6,7 +6,7 @@
 - name: Install GitLab
   yum:
     name:
-      - "{{ tmpDir }}/gitlab-runner_amd64.rpm"
+      - "{{ stagingDir }}/gitlab-runner_amd64.rpm"
     state: present
 
 
