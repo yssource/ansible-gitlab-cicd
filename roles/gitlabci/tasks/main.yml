@@ -5,6 +5,9 @@
 - import_tasks: "{{ role_path }}/../config_local_hosts.yml"
   tags: ['configLocalHost', 'configEtcHosts']
 
+- import_tasks: "{{ role_path }}/../assert-env.yml"
+  tags: ['assertEnv']
+  
 - name: Import docker role
   import_role:
     name: docker

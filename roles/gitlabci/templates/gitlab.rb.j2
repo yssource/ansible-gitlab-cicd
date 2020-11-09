@@ -29,7 +29,7 @@
 ##! On AWS EC2 instances, we also attempt to fetch the public hostname/IP
 ##! address from AWS. For more details, see:
 ##! https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
-external_url 'http://{{ ansible_fqdn }}'
+external_url 'https://{{ ansible_fqdn }}'
 
 ## Roles for multi-instance GitLab
 ##! The default is to have no roles enabled, which results in GitLab running as an all-in-one instance.
@@ -1255,11 +1255,11 @@ gitlab_rails['initial_shared_runners_registration_token'] = "{{ registration_tok
 
 # nginx['enable'] = true
 # nginx['client_max_body_size'] = '250m'
-# nginx['redirect_http_to_https'] = false
-# nginx['redirect_http_to_https_port'] = 80
+nginx['redirect_http_to_https'] = true
+nginx['redirect_http_to_https_port'] = 80
 
 ##! Most root CA's are included by default
-# nginx['ssl_client_certificate'] = "/etc/gitlab/ssl/ca.crt"
+nginx['ssl_client_certificate'] = "/etc/gitlab/ssl/ca.crt"
 
 ##! enable/disable 2-way SSL client authentication
 # nginx['ssl_verify_client'] = "off"
