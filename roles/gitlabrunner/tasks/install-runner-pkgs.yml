@@ -26,11 +26,11 @@
 #     mode: 0644
 #===============================================================================
 
-# - name: Generate GitLab-Runner ssh-keys
-#   shell: ssh-keygen -t rsa -N "" -b 2048 -f ~/.ssh/id_rsa -C gitlab-runner@{{ ansible_fqdn }}
-#   ignore_errors: true
-#   args:
-#     warn: true
+- name: Generate GitLab-Runner ssh-keys
+  shell: ssh-keygen -t rsa -N "" -b 2048 -f ~/.ssh/id_rsa -C gitlab-runner@{{ ansible_fqdn }}
+  ignore_errors: true
+  args:
+    warn: true
 
 - name: Get Helm Binary
   get_url:

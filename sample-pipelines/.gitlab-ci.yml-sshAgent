@@ -1,0 +1,16 @@
+deploy_production:
+    stage: deploy
+    before_script:
+        - yum install -y openssh-client
+        - eval $(ssh-agent -s) # Run the SSH client
+        # Adding environment's variable SSH_PRIVATE_KEY to the SSH client's agent that manages the private keys
+        - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+        # Create the SSH directory and give it the right permissions
+        - mkdir -p ~/.ssh
+        - chmod 700 ~/.ssh
+    script:
+        # Connecting to the server using SSH and executing commands like pulling updates to the cloned repo
+        - ssh -o StrictHostKeyChecking=no gitlab-runner@host_ip_address "cd /project && git pull"
+        # -o StrictHostKeyCheking=no is to disable strict host key checking in SSH
+    only:
+        - master

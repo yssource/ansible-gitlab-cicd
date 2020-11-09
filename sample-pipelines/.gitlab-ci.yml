@@ -1,0 +1,38 @@
+before_script:
+  - echo "Before script section"
+  - sudo su - -c "yum repolist"
+    # Run the ssh client
+  - eval $(ssh-agent -s) # Run the SSH client
+    # Adding environment's variable SSH_PRIVATE_KEY to the SSH client's agent that manages the private keys
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    # Create the SSH directory and give it the right permissions
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+after_script:
+  - echo "After script section"
+  - sudo su - -c "yum clean all"
+build1:
+  stage: build
+  script:
+    - echo "Do your build here"
+    - sudo su - -c "yum install -y ansible jq"
+
+test1:
+  stage: test
+  script:
+    - echo "Execute a test"
+    - if [[ ! -z `rpm -qa | grep -i jq` ]]; then sudo su - -c "jq --version"; fi
+test2:
+  stage: test
+  script:
+    - echo "Execute a parallel test"
+    - if [[ ! -z `rpm -qa | grep -i ansible` ]]; then sudo su - -c "ansible --version"; fi
+deploy1:
+  stage: deploy
+  script:
+    - echo "Do your deploy here"
+      # Connecting to the server using SSH and executing commands like pulling updates to the cloned repo
+    - ssh -o StrictHostKeyChecking=no gitlab-runner@10.13.3.6 "cd /project && git pull"
+      # -o StrictHostKeyCheking=no is to disable strict host key checking in SSH
+  only:
+    - master

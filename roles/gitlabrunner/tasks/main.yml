@@ -14,5 +14,5 @@
 - import_tasks: install-runner-pkgs.yml
   tags: ['installRunnerPackages']
 
-# - import_tasks: configure-runner.yml
-#   tags: ['configRunnerHost']
+- import_tasks: configure-runner.yml
+  tags: ['configRunnerHost']
