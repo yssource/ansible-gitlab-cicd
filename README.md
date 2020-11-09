@@ -4,7 +4,7 @@
 Setting initial root password on installation
 ===============================================
 
-# https://docs.gitlab.com/omnibus/settings/configuration.html
+https://docs.gitlab.com/omnibus/settings/configuration.html
 
 The initial password for the user root can be set at the installation time with the environment variable `GITLAB_ROOT_PASSWORD.
 
