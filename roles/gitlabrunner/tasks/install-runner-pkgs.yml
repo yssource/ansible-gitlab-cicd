@@ -8,23 +8,7 @@
     name:
       - "{{ stagingDir }}/gitlab-runner_amd64.rpm"
     state: present
-
-
-#===============================================================================
-#
-# TODO
-#   Register Runners https://docs.gitlab.com/runner/register/
-#
-#===============================================================================
-
-# - name: Render gitlab-runner Register config
-#   template:
-#     src: config.toml.j2
-#     dest: /etc/gitlab-runner/config.toml
-#     owner: gitlab-runner
-#     group: gitlab-runner
-#     mode: 0644
-#===============================================================================
+  register: installGitLabRunner
 
 - name: Generate GitLab-Runner ssh-keys
   shell: ssh-keygen -t rsa -N "" -b 2048 -f ~/.ssh/id_rsa -C gitlab-runner@{{ ansible_fqdn }}
@@ -42,4 +26,22 @@
   notify: "{{ item }}"
   with_items:
     - service restart firewalld
+
 ...
+
+
+#===============================================================================
+#
+# TODO
+#   Register Runners https://docs.gitlab.com/runner/register/
+#
+#===============================================================================
+
+# - name: Render gitlab-runner Register config
+#   template:
+#     src: config.toml.j2
+#     dest: /etc/gitlab-runner/config.toml
+#     owner: gitlab-runner
+#     group: gitlab-runner
+#     mode: 0644
+#===============================================================================

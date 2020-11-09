@@ -13,7 +13,7 @@ GITLAB_ROOT_PASSWORD="<strongpassword>"
 EXTERNAL_URL="http://gitlab.exmaple.com" yum install gitlab-ce
 ```
 
-Set API User Access Token 
+Set API User Access Token
 --------------------------------------------
 Token Must be exactly 20 characters
 
@@ -69,17 +69,49 @@ Using the API to Register Gitlab-Runner
 ============================================
 
 ```
-[root@usctvltstgitlbci01v ~]# curl --request POST "https://localhost:80/api/v4/runners" --form "token=vu1zFo5okhrn69uBLApq" --form "description=localRunner" --form "tag_list=ruby,mysql,shell"
+[root@usctvltstgitlbci01v ~]# curl --request POST "https://localhost:80/api/v4/runners" \
+    --form "token=vu1zFo5okhrn69uBLApq"
+    --form "description=localRunner"
+    --form "tag_list=ruby,mysql,shell"
 ```
 
 ```
-curl --request POST "https://{{ gitlabciUrl }}/api/v4/runners" \
-     --form "token=<registration_token>" \
-     --form "description={{ ansible_fqdn }}" \
-     --form "locked=false" \
-     --form "run_untagged=yes" \
-     --form "tag_list=shell,ssh"
+#===============================================================================
+- name: Register gitlab-runner
+  shell:  curl --request POST "http://{{ gitlabciUrl }}/api/v4/runners" \
+               --form "url=http://10.13.3.5" \
+               --form "token={{ registration_token }}" \
+               --form "description={{ ansible_fqdn }}" \
+               --form "tag_list=shell" \
+               --form "locked=no" \
+               --form "run_untagged=yes" \
+               --form "online=true" \
+               --form "status=connected" \
+               --form "executor=shell"
+  ignore_errors: false
+  args:
+    warn: false -->
+#===============================================================================
 ```
+
+[root@usctvltstgitlbci01v gitlab-runner]# curl -s --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.13.3.5/api/v4/runners/all" | jq -r '.'
++ jq -r .
++ curl -s --header 'PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq' http://10.13.3.5/api/v4/runners/all
+[
+  {
+    "id": 3,
+    "description": "usctvltstgitlbci01v.curbstone.com",
+    "ip_address": "10.13.3.5",
+    "active": true,
+    "is_shared": true,
+    "name": null,
+    "online": null,
+    "status": "not_connected"
+  }
+]
+++ printf '\033]0;%s@%s:%s\007' root usctvltstgitlbci01v /etc/gitlab-runner
+[root@usctvltstgitlbci01v gitlab-runner]#
+
 
 Manually Registering GitLab runner
 ==============================
@@ -87,7 +119,7 @@ Obtain a regoistration token
 Shared Runner:
 For a shared runner, have an administrator go to the GitLab Admin Area:
 http://<gitlab-url>
-==> Overview 
+==> Overview
   ==> Runners
 
 # https://docs.gitlab.com/runner/register/
@@ -128,10 +160,40 @@ gitlab_rails['monitoring_whitelist'] = ['127.0.0.0/8', '192.168.0.1']
     }
  })
 
+gitlab-runner]# gitlab-runner register \
+      --tag-list shell  \
+      -n -r vu1zFo5okhrn69uBLApq  \
+      --url http://localhost  \
+      --run-untagged=true  \
+      --locked=false  \
+      --name=usctvltstgitlbci01v.curbstone.com \
+      --executor=shell
 
 gitlab-runner register --tag-list shell \
-      -n -r bKUpVXkKoTnKJW_UtKjk \
+      -n -r vu1zFo5okhrn69uBLApq \
       --url http://usctvltstgitlbci01v.curbstone.com \
-      --run-untagged true \
-      --locked false \
-      --name usctvltstgitlbci01v.curbstone.com
+      --run-untagged=true \
+      --locked=false \
+      --name=usctvltstgitlbci01v.curbstone.com
+
+Using the API to Delete GitLab-Runners
+========================================
+
+curl --request DELETE --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.13.3.5/api/v4/runners/3"
+
+#===============================================================================
+# - name: Register gitlab-runner
+#   shell:  curl --request POST "http://{{ gitlabciUrl }}/api/v4/runners" \
+#                --form "url=http://10.13.3.5" \
+#                --form "token={{ registration_token }}" \
+#                --form "description={{ ansible_fqdn }}" \
+#                --form "tag_list=shell" \
+#                --form "locked=no" \
+#                --form "run_untagged=yes" \
+#                --form "online=true" \
+#                --form "status=connected" \
+#                --form "executor=shell"
+#   ignore_errors: false
+#   args:
+#     warn: false
+#===============================================================================

@@ -1,14 +1,20 @@
 ---
+
 - name: Register gitlab-runner
-  shell:  curl --request POST "http://gitlabciUrl/api/v4/runners" \
-               --form "token={{ registration_token }}" \
-               --form "description={{ ansible_fqdn }}" \
-               --form "tag_list=shell" \
-               --form "locked=no" \
-               --form "run_untagged=yes" \
-               --form "online=true"
+  shell: |
+     gitlab-runner register \
+        --tag-list shell  \
+        -n -r "{{ registration_token }}"  \
+        --url http://"{{ gitlabciUrl }}"  \
+        --run-untagged=true  \
+        --locked=false  \
+        --name="{{ ansible_fqdn }}" \
+        --executor=shell
   ignore_errors: false
   args:
     warn: false
+  register: registerGitLabRunner
 
+- debug:
+    msg: "{{ ansible_fqdn }}  {{ registerGitLabRunner.stdout }}"
 ...
