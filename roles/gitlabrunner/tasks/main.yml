@@ -6,6 +6,14 @@
 - import_tasks: "{{ role_path }}/../config_local_hosts.yml"
   tags: ['configLocalHost', 'configEtcHosts']
 
+- import_tasks: "{{ role_path }}/../assert-env.yml"
+  tags: ['assertEnv']
+
+# - name: Import common role
+#   import_role:
+#     name: common
+#   tags: ['configCerts', 'installCerts']
+
 - name: Import docker role
   import_role:
     name: docker
@@ -17,5 +25,10 @@
 - import_tasks: install-runner-pkgs.yml
   tags: ['installRunnerPackages']
 
-- import_tasks: configure-runner.yml
-  tags: ['configRunnerHost']
+- name: Import common role
+  import_role:
+    name: common
+  tags: ['configCerts', 'installCerts']
+
+# - import_tasks: configure-runner.yml
+#   tags: ['configRunnerHost']

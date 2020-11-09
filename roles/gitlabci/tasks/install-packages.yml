@@ -30,16 +30,31 @@
 
 - name: Create GitLab Dir
   file:
-    path: "/etc/gitlab"
+    dest: "{{ item.dst  }}"
     state: directory
     owner: root
     group: root
-    mode: 0775
+    mode: "{{ item.mode }}"
+  with_items:
+      - { dst: /etc/gitlab, mode: '0775' }
+      - { dst: /etc/gitlab/ssl, mode: '0755' }
+
+- name: Copy GitLab SSL Certs
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: root
+    group: root
+    mode: 0400
+  with_items:
+    - { src: vault/ca.crt, dst: /etc/gitlab/ssl/ca.crt }
+    - { src: vault/server.crt, dst: "/etc/gitlab/ssl/{{ ansible_fqdn }}.crt" }
+    - { src: vault/server.key, dst: '/etc/gitlab/ssl/{{ ansible_fqdn }}.key' }
 
 - name: Render gitlab-ce template
   template:
     src: gitlab.rb.j2
-    dest: "/etc/gitlab/gitlab.rb"
+    dest: "{{ gitlabDir }}/gitlab.rb"
     owner: root
     group: root
     mode: 0600
@@ -67,6 +82,51 @@
   environment:
     EXTERNAL_URL: "https://{{ ansible_fqdn }}"
     GITLAB_ROOT_PASSWORD: "{{ GitLab_Passwd }}"
+  tags: ['configGitlabCe']
+
+- name: Download Infra Code Packages
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    mode: " {{ item.mode }}"
+  with_items:
+    - { url: 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.25.5/terragrunt_linux_amd64', dest: '{{ localBin }}/terragrunt', mode: '0755' }
+    - { url: 'https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip', dest: '{{ stagingDir }}', mode: '0755' }
+    - { url: 'https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz', dest: '{{ stagingDir }}', mode: '0755' }
+  tags: ['installInfraCodePackages']
+#
+# Install supporting Insrstructure Code Packages
+#
+#===============================================================================
+# TODO:
+#  bsdtar -x -f helm-v3.3.4-linux-amd64.tar.gz --strip-components 1
+# README.md
+# LICENSE
+# helm
+#
+# Or
+#
+# [root@usctvltstgitlbci01v tmp]# tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
+# linux-amd64/
+# linux-amd64/README.md
+# linux-amd64/LICENSE
+# linux-amd64/helm
+# [root@usctvltstgitlbci01v tmp]#
+#===============================================================================
+
+- name: "Unarchive {{ item }}"
+  unarchive:
+    src: "{{ item }}"
+    dest: "{{ localBin }}"
+    mode: 0755
+  loop:
+    - "{{ stagingDir }}/terraform_0.13.5_linux_amd64.zip"
+    - "{{ stagingDir }}/helm-v3.3.4-linux-amd64.tar.gz"
+
+- name: Recursively Remove stagingDir
+  file:
+    path: "{{ stagingDir}}"
+    state: absent
 
   notify: "{{ item }}"
   with_items:

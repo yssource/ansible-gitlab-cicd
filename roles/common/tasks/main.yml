@@ -1,0 +1,26 @@
+---
+  #
+  # Import tasks
+  #
+# - import_tasks: "{{ role_path }}/../config_local_hosts.yml"
+#   tags: ['configLocalHost', 'configEtcHosts']
+#
+# - import_tasks: "{{ role_path }}/../assert-env.yml"
+#   tags: ['assertEnv']
+#
+# - name: Import docker role
+#   import_role:
+#     name: docker
+#   tags: ['configDocker', 'installDocker']
+#
+# - import_tasks: configure-firewalld.yml
+#   tags: ['configHost']
+#
+# - import_tasks: configure-host.yml
+#   tags: ['configHost']
+
+- import_tasks: install-certs.yml
+  tags: ['installCerts']
+
+- import_tasks: configure-runner.yml
+  tags: ['configRunnerHost']
