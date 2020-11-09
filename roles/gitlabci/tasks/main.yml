@@ -19,5 +19,8 @@
 - import_tasks: install-packages.yml
   tags: ['installPackages']
 
+- import_tasks: configure-runner.yml
+  tags: ['configRunnerHost']
+
 - import_tasks: install-infracode-pkgs.yml
   tags: ['installInfraCodePackages']

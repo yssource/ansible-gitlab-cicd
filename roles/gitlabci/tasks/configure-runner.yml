@@ -1,4 +1,5 @@
 ---
+
 - name: Register gitlab-runner
   shell: |
      gitlab-runner register \
@@ -16,5 +17,4 @@
 
 - debug:
     msg: "{{ ansible_fqdn }}  {{ registerGitLabRunner.stdout }}"
-
 ...

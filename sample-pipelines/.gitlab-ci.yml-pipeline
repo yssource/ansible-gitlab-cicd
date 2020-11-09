@@ -1,0 +1,10 @@
+before_script:
+    - echo "Before Script"
+
+after_script:
+    - echo "Executing after script"
+    - if [[ -z `rpm -qa | grep -i jq` ]]; then sudo su - -c "yum install -y jq"; fi
+build:
+    stage: build
+    script:
+        - echo "Executing build"

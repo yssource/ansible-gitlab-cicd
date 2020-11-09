@@ -33,11 +33,16 @@
   yum:
     name:
       - containerd.io
-      # - "docker-compose-{{docker.compose}}"
       - "docker-ce-{{docker.version}}"
       - "docker-ce-cli-{{docker.version}}"
     enablerepo: docker-ce-stable
     state: present
+
+- name: Get Docker Compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/{{ docker.compose }}/docker-compose-Linux-x86_64
+    dest: "{{ localBin }}/docker-compose"
+    mode: 0755
 
 - name: docker-ce version currently installed
   shell:

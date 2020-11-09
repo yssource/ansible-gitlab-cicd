@@ -6,8 +6,8 @@
       {{ item.ip }} {{ item.fqdn }} {{ item.name }}
     marker: "#{ mark } ANSIBLE MANAGED BLOCK {{ item.name }}"
   with_items:
-    - { ip: 10.13.3.5, fqdn: usctvltstgitlbci01v.symbridgedev.com, name: usctvltstgitlbci01v }
-    - { ip: 10.13.3.6, fqdn: usctvltstgitlbrn01v.symbridgedev.com, name: usctvltstgitlbrn01v }
+    - { ip: 10.13.3.5, fqdn: usctvltstgitlbci01v.curbstone.com, name: usctvltstgitlbci01v }
+    - { ip: 10.13.3.6, fqdn: usctvltstgitlbrn01v.curbstone.com, name: usctvltstgitlbrn01v }
 
 - name: Configure gitlab-runner sudoers config
   copy:

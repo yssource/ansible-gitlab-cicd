@@ -4,4 +4,4 @@ init_config:
 instances:
   - # Daemon and system configuration
     url: "unix://var/run/docker.sock"
-    collect_labels_as_tags: ["com.docker.swarm.service.name", "com.rsn.appname"]
+    collect_labels_as_tags: ["com.docker.symbridge.service.name", "com.symbridge.appname"]

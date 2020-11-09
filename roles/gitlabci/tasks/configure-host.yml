@@ -27,7 +27,7 @@
     state: directory
     owner: root
     group: root
-    mode: 755
+    mode: 0755
 
 
 - name: Get NodeJS Repo Script

@@ -1,4 +1,9 @@
-#
-# Allow gitlab-runner to run any commands as root
-#
-gitlab-runner ALL=(ALL)  NOPASSWD: ALL
+Defaults    always_set_home
+Defaults    match_group_by_gid
+Defaults    always_query_group_plugin
+Defaults    env_reset
+Defaults    env_keep =  "SSH_AUTH_SOCK"
+Defaults    env_keep =  "COLORS DISPLAY HOSTNAME HISTSIZE KDEDIR LS_COLORS"
+Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+
+gitlab-runner   ALL=(ALL)       NOPASSWD:ALL
