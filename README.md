@@ -180,7 +180,7 @@ Using the API to Delete GitLab-Runners
 ========================================
 
 curl --request DELETE --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.13.3.5/api/v4/runners/3"
-
+```
 #===============================================================================
 - name: Register gitlab-runner
   shell:  curl --request POST "http://{{ gitlabciUrl }}/api/v4/runners" \
@@ -197,3 +197,4 @@ curl --request DELETE --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.
   args:
     warn: false
 #===============================================================================
+```
