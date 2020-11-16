@@ -22,5 +22,11 @@
 - import_tasks: install-packages.yml
   tags: ['installPackages']
 
-- import_tasks: configure-runner.yml
-  tags: ['configRunnerHost']
+- name: Import Common role
+  import_role:
+    name: common
+  # tags: ['configDocker', 'installDocker']
+
+#
+# - import_tasks: configure-runner.yml
+#   tags: ['configRunnerHost']

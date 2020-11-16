@@ -1,10 +1,35 @@
 ---
+
+- name: Create GitLab-Runner Dir
+  file:
+    dest: "{{ item.dst  }}"
+    state: directory
+    owner: gitlab-runner
+    group: gitlab-runner
+    mode: "{{ item.mode }}"
+  with_items:
+    - { dst: /etc/gitlab-runner, mode: '0755' }
+    - { dst: /etc/gitlab-runner/certs, mode: '0755' }
+
+- name: Copy GitLab-Runner SSL Certs
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: 0400
+  with_items:
+    - { src: vault/ca.crt, dst: /etc/gitlab-runner/certs/ca.crt, owner: 'gitlab-runner', group: 'gitlab-runner' }
+    - { src: vault/server.crt, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt', owner: 'gitlab-runner', group: 'gitlab-runner' }
+    - { src: vault/server.key, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key', owner: 'gitlab-runner', group: 'gitlab-runner' }
+
+
 - name: Register gitlab-runner
   shell: |
      gitlab-runner register \
-         --tls-ca-file /etc/gitlab/ssl/ca.crt \
-         --tls-cert-file "/etc/gitlab/ssl/{{ ansible_fqdn }}.crt" \
-         --tls-key-file "/etc/gitlab/ssl/{{ ansible_fqdn }}.key" \
+         --tls-ca-file /etc/gitlab-runner/certs/ca.crt \
+         --tls-cert-file "/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt" \
+         --tls-key-file "/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key" \
          --tag-list shell  \
          -n -r "{{ registration_token }}"  \
          --url https://"{{ gitlabciUrl }}" \
@@ -17,6 +42,16 @@
     warn: false
   register: registerGitLabRunner
 
+- name: Set prepare .gitConfig
+  shell: |
+    git config --global http.sslCAPath /etc/gitlab-runner/certs/
+  become: yes
+  become_user: gitlab-runner
+  ignore_errors: true
+  args:
+    warn: true
+
 - debug:
-    msg: "{{ ansible_fqdn }}  {{ registerGitLabRunner.stdout }}"
+    msg: "{{ ansible_fqdn }}  {{ registerGitLabRunner }}"
+
 ...

@@ -1,0 +1,41 @@
+---
+#
+# Install supporting Insrstructure Code Packages
+#
+#===============================================================================
+# TODO:
+#  bsdtar -x -f helm-v3.3.4-linux-amd64.tar.gz --strip-components 1
+# README.md
+# LICENSE
+# helm
+#
+# Or
+#
+# [root@usctvltstgitlbci01v tmp]# tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
+# linux-amd64/
+# linux-amd64/README.md
+# linux-amd64/LICENSE
+# linux-amd64/helm
+# [root@usctvltstgitlbci01v tmp]#
+#===============================================================================
+
+- name: Download Infra Code Packages
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    mode: " {{ item.mode }}"
+  with_items:
+    - { url: 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.25.5/terragrunt_linux_amd64', dest: '{{ localBin }}/terragrunt', mode: '0755' }
+    - { url: 'https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip', dest: '{{ stagingDir }}', mode: '0755' }
+    - { url: 'https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz', dest: '{{ stagingDir }}', mode: '0755' }
+
+- name: "Unarchive {{ item }}"
+  unarchive:
+    src: "{{ item }}"
+    dest: "{{ localBin }}"
+    mode: 0755
+  loop:
+    - "{{ stagingDir }}/terraform_0.13.5_linux_amd64.zip"
+    - "{{ stagingDir }}/helm-v3.3.4-linux-amd64.tar.gz"
+
+...

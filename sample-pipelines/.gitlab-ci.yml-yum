@@ -1,3 +1,6 @@
+variables:
+  GIT_SSL_NO_VERIFY: "true"
+
 before_script:
   - echo "Before script section"
   - sudo su - -c "yum repolist"

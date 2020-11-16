@@ -9,11 +9,6 @@
 - import_tasks: "{{ role_path }}/../assert-env.yml"
   tags: ['assertEnv']
 
-# - name: Import common role
-#   import_role:
-#     name: common
-#   tags: ['configCerts', 'installCerts']
-
 - name: Import docker role
   import_role:
     name: docker
@@ -30,5 +25,4 @@
     name: common
   tags: ['configCerts', 'installCerts']
 
-# - import_tasks: configure-runner.yml
-#   tags: ['configRunnerHost']
+...

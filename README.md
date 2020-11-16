@@ -207,7 +207,7 @@ To enable HTTPS for the domain {{ ansible_fqdn }}:
     1. Create
 
           ```
-          mkdir -m 700 -p /tmp/gitlab/ssl udo mkdir -p /etc/gitlab/ssl
+          mkdir -m 700 -p /tmp/gitlab/ssl; sudo mkdir -p /etc/gitlab/ssl
           ```
         Except for the root certificate, GitLab expects the Public and Private SSL certificates, copied to /etc/gitlab/ssl to be respectively named:
         ca.crt
@@ -236,3 +236,36 @@ To enable HTTPS for the domain {{ ansible_fqdn }}:
           ```
           sudo gitlab-ctl reconfigure
           ```
+
+Troubleshooting TLS Related Issues with the gitlab-runners
+==============================================================
+
+Modify the variables: section of the pipeline script to ignore certificate verification
+
+.gitlab-ci.yml
+```
+variables:
+  GIT_SSL_NO_VERIFY: "true"
+
+before_script:
+  - echo "Before script section"
+
+````
+
+This suppresses the error
+
+```
+Reinitialized existing Git repository in /home/gitlab-runner/builds/VEy3ah5K/0/sadealexandraio/gitlab-ci-pipeline/.git/
+fatal: unable to access 'https://gitlab-ci-token:[MASKED]@usctvltstgitlbci01v.curbstone.com/sadealexandraio/gitlab-ci-pipeline.git/': Peer's Certificate issuer is not recognized.
+```
+
+git config --global http.sslCAPath /etc/gitlab-runner/certs/
+git config --global http.sslVerify "false"
+
+```
+[http]
+	sslCAPath = /etc/gitlab-runner/certs/
+	sslVerify = false
+```
+
+Setting the directory and the contents to be owned by gitlab-runner resolves the "Peer's Certificate issuer is not recognized" error.
