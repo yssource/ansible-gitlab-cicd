@@ -128,6 +128,11 @@
     path: "{{ stagingDir}}"
     state: absent
 
+- name: Recursively Remove stagingDir
+  file:
+    path: "{{ stagingDir}}"
+    state: absent
+
   notify: "{{ item }}"
   with_items:
     - service restart redis
