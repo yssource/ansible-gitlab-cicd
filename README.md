@@ -182,20 +182,20 @@ Using the API to Delete GitLab-Runners
 curl --request DELETE --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.13.3.5/api/v4/runners/3"
 
 #===============================================================================
-# - name: Register gitlab-runner
-#   shell:  curl --request POST "http://{{ gitlabciUrl }}/api/v4/runners" \
-#                --form "url=http://10.13.3.5" \
-#                --form "token={{ registration_token }}" \
-#                --form "description={{ ansible_fqdn }}" \
-#                --form "tag_list=shell" \
-#                --form "locked=no" \
-#                --form "run_untagged=yes" \
-#                --form "online=true" \
-#                --form "status=connected" \
-#                --form "executor=shell"
-#   ignore_errors: false
-#   args:
-#     warn: false
+ - name: Register gitlab-runner
+   shell:  curl --request POST "http://{{ gitlabciUrl }}/api/v4/runners" \
+                --form "url=http://10.13.3.5" \
+                --form "token={{ registration_token }}" \
+                --form "description={{ ansible_fqdn }}" \
+                --form "tag_list=shell" \
+                --form "locked=no" \
+                --form "run_untagged=yes" \
+                --form "online=true" \
+                --form "status=connected" \
+                --form "executor=shell"
+   ignore_errors: false
+   args:
+     warn: false
 #===============================================================================
 
 
@@ -267,5 +267,4 @@ git config --global http.sslVerify "false"
 	sslCAPath = /etc/gitlab-runner/certs/
 	sslVerify = false
 ```
-
 Setting the directory and the contents to be owned by gitlab-runner resolves the "Peer's Certificate issuer is not recognized" error.
