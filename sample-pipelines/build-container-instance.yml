@@ -1,0 +1,62 @@
+---
+- hosts: localhost
+  gather_facts: true
+  tags: always
+
+  vars:
+    docker_mounts:
+      - /apps/docker
+      - /home/appuser
+
+  tasks:
+
+    - debug:
+        msg: "{{'{{'}}.Name{{'}}'}}"
+
+    - name: more complex items to add several users
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        groups: "{{ item.groups }}"
+        state: present
+      with_items:
+        - { name: appuser, uid: 1001, groups: docker }
+        - { name: dockermgr, uid: 1002, groups: docker }
+
+    - name: Install required packages
+      yum:
+        name:
+          - lorax
+          - anaconda-tui
+          - yum-langpacks
+        state: present
+
+    - name: Clone sig-cloud-instance-build Git Repo
+      git:
+        repo: 'https://github.com/CentOS/sig-cloud-instance-build.git'
+        dest: /apps/sig-cloud-instance-build
+      register: cloneSigCloud
+
+    - set_fact:
+        kickstart_instance: "{{ ansible_distribution|lower }}-{{ansible_distribution_major_version}}_{{ansible_machine}}.ks"
+
+    - debug:
+        msg: "{{ kickstart_instance }} {{ cloneSigCloud.failed}} "
+
+    - name: Build sig-cloud-instance
+      shell: |
+        "/apps/sig-cloud-instance-build/docker/containerbuild.sh {{ kickstart_instance }}"
+        #echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh centos-7-x86_64.ks
+      ignore_errors: true
+      args:
+        warn: true
+      # when: cloneSigCloud.failed == "False"
+
+    # date '+%Y%m%d'
+    - name: Build sig-cloud-instance
+      shell: |
+        docker build --force-rm -q --squash -t centos-7-x86_64 .
+      ignore_errors: true
+      args:
+        chdir: /var/tmp/containers/20201122/centos-7-x86_64/docker
+...
