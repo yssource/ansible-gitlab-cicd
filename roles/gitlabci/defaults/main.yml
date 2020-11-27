@@ -1,6 +1,7 @@
 ---
 
 tmpDir: /tmp
+gitlabDir: /etc/gitlab
 GitLab_Passwd: !vault |
                $ANSIBLE_VAULT;1.1;AES256
                31626636373964373834636434663261323431613261633139343536376666663961323864336232

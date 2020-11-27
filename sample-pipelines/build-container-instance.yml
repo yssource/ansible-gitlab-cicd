@@ -1,0 +1,70 @@
+---
+- hosts: localhost
+  gather_facts: true
+  tags: always
+
+  vars:
+    docker_mounts:
+      - /apps/docker
+      - /home/appuser
+
+  tasks:
+
+    - debug:
+        msg: "{{'{{'}}.Name{{'}}'}}"
+
+    - name: more complex items to add several users
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        groups: "{{ item.groups }}"
+        state: present
+      with_items:
+        - { name: appuser, uid: 1001, groups: docker }
+        - { name: dockermgr, uid: 1002, groups: docker }
+
+    - name: Install required packages
+      yum:
+        name:
+          - lorax
+          - anaconda-tui
+          - yum-langpacks
+        state: present
+
+    - name: Clone sig-cloud-instance-build Git Repo
+      git:
+        repo: 'https://github.com/CentOS/sig-cloud-instance-build.git'
+        dest: /apps/sig-cloud-instance-build
+      register: cloneSigCloud
+
+    - set_fact:
+        kickstart_instance: "{{ ansible_distribution|lower }}-{{ansible_distribution_major_version}}-{{ansible_machine}}.ks"
+
+    - debug:
+        msg: "{{ kickstart_instance }} {{ cloneSigCloud.failed}} "
+
+    - name: Build sig-cloud-instance
+      shell: |
+        echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh {{ kickstart_instance }}
+      ignore_errors: true
+      args:
+        chdir: /apps/sig-cloud-instance-build/docker
+        warn: true
+      # environment: $PATH:/apps/sig-cloud-instance-build/docker
+      # when: cloneSigCloud.failed == "False"
+
+    - name: Get Time Stamp
+      shell: "date '+%Y%m%d'"
+      register: currentDate
+
+    - debug:
+        msg: "{{ currentDate}}"
+
+    - name: Build sig-cloud-instance
+      shell: |
+        docker build --force-rm -q --squash -t {{ kickstart_instance }} .
+      ignore_errors: true
+      args:
+        chdir: "/var/tmp/containers/{{ currentDate.stdout }}/{{ kitkstart_instance }}/docker"
+...
+        #echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh centos-7-x86_64.ks

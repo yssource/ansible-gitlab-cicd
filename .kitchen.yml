@@ -47,7 +47,7 @@ suites:
       playbook: gitlabci.yml
       ansible_vault_password_file: [".kitchenCIvault"]
 
-  - name: gitlab-runner
+  - name: gitlab-runner-01
     driver:
       vm_hostname: usctvltstgitlbrn01v.curbstone.com
       customize:
@@ -56,6 +56,21 @@ suites:
         natdnshostresolver1: 'on'
       network:
         - ["private_network", {ip: "10.13.3.6"}]
+    provisioner:
+      hosts: ansible-centos-7.8.2003-x86_64
+      require_ansible_repo: true
+      playbook: gitlabrunner.yml
+      ansible_vault_password_file: [".kitchenCIvault"]
+
+  - name: gitlab-runner-02
+    driver:
+      vm_hostname: usctvltstgitlbrn02v.curbstone.com
+      customize:
+        cpus: 1
+        memory: 1024
+        natdnshostresolver1: 'on'
+      network:
+        - ["private_network", {ip: "10.13.3.7"}]
     provisioner:
       hosts: ansible-centos-7.8.2003-x86_64
       require_ansible_repo: true

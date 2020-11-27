@@ -1,8 +1,9 @@
-variables:
-  GIT_SSL_NO_VERIFY: "true"
-
 before_script:
   - echo "Before script section"
+  - eval `ssh-agent -s`
+  - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
   - sudo su - -c "yum repolist"
 
 after_script:
@@ -28,3 +29,4 @@ deploy1:
   stage: deploy
   script:
     - echo "Do your deploy here"
+    - ssh -o StrictHostKeyChecking=no gitlab-runner@usctvltstgitlbrn01v.curbstone.com "cd ~; touch test.txt"

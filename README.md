@@ -197,4 +197,81 @@ curl --request DELETE --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.
   args:
     warn: false
 #===============================================================================
+
+
+Manually configuring HTTPS
+=================================
+
+To enable HTTPS for the domain {{ ansible_fqdn }}:
+
+    1. Create
+
+          ```
+          mkdir -m 700 -p /tmp/gitlab/ssl; sudo mkdir -p /etc/gitlab/ssl
+          ```
+        Except for the root certificate, GitLab expects the Public and Private SSL certificates, copied to /etc/gitlab/ssl to be respectively named:
+        ca.crt
+        {{ ansible_fqdn }}.key
+        {{ ansible_fqdn }}.crt
+
+    2. Edit the external_url in /etc/gitlab/gitlab.rb:
+
+          ```
+          external_url 'https://{{ ansible_fqdn }}'
+          ```
+
+    3. Edit the nginx['redirect_http_to_https'] in /etc/gitlab/gitlab.rb settings to redirect HTTP requests to HTTPS.
+          ```
+          nginx['redirect_http_to_https'] = true
+          nginx['redirect_http_to_https_port'] = 80
+
+         ```
+    4. Ensure that the https servie port is opened if running firewalld
+
+             ```
+             sudo firewall-cmd --permanent --add-service=https
+             sudo systemctl reload firewalld
+             ```
+    5. Reconfigure GitLab:
+          ```
+          sudo gitlab-ctl reconfigure
+          ```
+
+Troubleshooting TLS Related Issues with the gitlab-runners
+==============================================================
+
+Modify the variables: section of the pipeline script to ignore certificate verification
+
+.gitlab-ci.yml
 ```
+variables:
+  GIT_SSL_NO_VERIFY: "true"
+
+before_script:
+  - echo "Before script section"
+
+````
+
+This suppresses the error
+
+```
+Reinitialized existing Git repository in /home/gitlab-runner/builds/VEy3ah5K/0/sadealexandraio/gitlab-ci-pipeline/.git/
+fatal: unable to access 'https://gitlab-ci-token:[MASKED]@usctvltstgitlbci01v.curbstone.com/sadealexandraio/gitlab-ci-pipeline.git/': Peer's Certificate issuer is not recognized.
+```
+
+git config --global http.sslCAPath /etc/gitlab-runner/certs/
+
+```
+[http]
+	sslCAPath = /etc/gitlab-runner/certs/
+	sslVerify = false
+```
+
+Test Https Connectivity using the CAfile
+============================================
+
+```
+openssl s_client -CAfile /etc/gitlab-runner/certs/usctvltstgitlbci01v.curbstone.com.crt -connect usctvltstgitlbci01v.curbstone.com:443
+```
+Setting the directory and the contents to be owned by gitlab-runner and setting sslCAPath in ~/gitlab-runner/.gitconfig resolves the "Peer's Certificate issuer is not recognized" error.
+
