@@ -18,11 +18,11 @@
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: 0400
+  no_log: true
   with_items:
     - { src: vault/ca.crt, dst: /etc/gitlab-runner/certs/ca.crt, owner: 'gitlab-runner', group: 'gitlab-runner' }
     - { src: vault/server.crt, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt', owner: 'gitlab-runner', group: 'gitlab-runner' }
     - { src: vault/server.key, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key', owner: 'gitlab-runner', group: 'gitlab-runner' }
-
 
 - name: Register gitlab-runner
   shell: |
@@ -51,6 +51,16 @@
   args:
     warn: true
 
+- name: Create GitLab-Runner .ssh Dir
+  file:
+    dest: "{{ item.dst  }}"
+    state: directory
+    owner: gitlab-runner
+    group: gitlab-runner
+    mode: "{{ item.mode }}"
+  with_items:
+      - { dst: /home/gitlab-runner/.ssh, mode: '0700' }
+
 - name: Copy GitLab-Runner SSH Keys
   copy:
     src: "{{ item.src }}"
@@ -58,8 +68,11 @@
     owner: gitlab-runner
     group: gitlab-runner
     mode: 0700
+  no_log: true
   with_items:
-    - { src: kitchenCIgitlabrunner, dst: /home/gitlab-runner/.ssh }
+    - { src: kitchenCIgitlabrunner/usctvltstgitlb-id_rsa, dst: /home/gitlab-runner/.ssh/id_rsa }
+    - { src: kitchenCIgitlabrunner/usctvltstgitlb-id_rsa.pub, dst: /home/gitlab-runner/.ssh/id_rsa.pub }
+  when: ansible_fqdn is search('usctvltstgitlb')
 
 - name: Configure gitlab-runner Authorized Keys
   authorized_key:
@@ -68,6 +81,7 @@
     state: present
     validate_certs: False
     manage_dir: True
+  no_log: true
   with_file:
     - kitchenCIgitlabrunner/usctvltstgitlb-id_rsa.pub
   when: ansible_fqdn is search('usctvltstgitlb')
@@ -79,10 +93,33 @@
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: 0600
+  no_log: true
   with_items:
     - { src: runner_ssh_config.j2, dst: /home/gitlab-runner/.ssh/ssh_config, owner: 'gitlab-runner', group: 'gitlab-runner' }
 
-- debug:
-    msg: "{{ ansible_fqdn }}  {{ registerGitLabRunner }}"
+- name: Download Infra Code Packages
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    mode: " {{ item.mode }}"
+  with_items:
+    - { url: 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.25.5/terragrunt_linux_amd64', dest: '{{ localBin }}/terragrunt', mode: '0755' }
+    - { url: 'https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip', dest: '{{ stagingDir }}', mode: '0755' }
+    - { url: 'https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz', dest: '{{ stagingDir }}', mode: '0755' }
+  tags: ['installInfraCodePackages']
+
+- name: "Unarchive {{ item }}"
+  unarchive:
+    src: "{{ item }}"
+    dest: "{{ localBin }}"
+    mode: 0755
+  loop:
+    - "{{ stagingDir }}/terraform_0.13.5_linux_amd64.zip"
+    - "{{ stagingDir }}/helm-v3.3.4-linux-amd64.tar.gz"
+
+- name: Recursively Remove stagingDir
+  file:
+    path: "{{ stagingDir}}"
+    state: absent
 
 ...

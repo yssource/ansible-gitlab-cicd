@@ -1,0 +1,39 @@
+---
+- hosts: localhost
+  gather_facts: true
+  tags: always
+
+  vars:
+    appDeployUser: gitlab-runner
+    env: tst
+    gitlabciUrl: "{{ 'usctvltstgitlbci01v.curbstone.com' if env is search('tst')
+                  else 'symuseltstgitlbci01v.cloudbridge-dev.com'
+                }}"
+    executor: "{{ 'ssh' if env is search('tst')
+                         else 'ssh'
+                     }}"
+    docker_mounts:
+      - /apps/docker
+      - /home/appuser
+
+  tasks:
+
+    - name: Register gitlab-runner
+      shell: |
+        gitlab-runner register \
+          --tls-ca-file /etc/gitlab-runner/certs/ca.crt \
+          --tls-cert-file "/etc/gitlab-runner/certs/usctvltstgitlbrn02v.curbstone.com.crt" \
+          --tls-key-file "/etc/gitlab-runner/certs/usctvltstgitlbrn02v.curbstone.com.key" \
+          --tag-list shell,ssh  \
+          -n -r vu1zFo5okhrn69uBLApq \
+          --url https://"{{ gitlabciUrl }}" \
+          --run-untagged=true  \
+          --locked=false  \
+          --name="{{ ansible_fqdn }}" \
+          --executor="{{ executor }}" \
+          --ssh-host "{{ ansible_fqdn}}" \
+          --ssh-port 22 \
+          --ssh-identity-file "/home/{{appDeployUser}}/.ssh/id_rsa" \
+          --ssh-user "{{ appDeployUser }}"
+
+...

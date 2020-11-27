@@ -10,9 +10,6 @@
 
   tasks:
 
-    - debug:
-        msg: "{{'{{'}}.Name{{'}}'}}"
-
     - name: more complex items to add several users
       user:
         name: "{{ item.name }}"
@@ -62,9 +59,8 @@
 
     - name: Build sig-cloud-instance
       shell: |
-        docker build --force-rm -q --squash -t {{ kickstart_instance }} .
+        docker build --force-rm -q --squash -t "{{ kickstart_instance }}" .
       ignore_errors: true
       args:
         chdir: "/var/tmp/containers/{{ currentDate.stdout }}/{{ kitkstart_instance }}/docker"
 ...
-        #echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh centos-7-x86_64.ks

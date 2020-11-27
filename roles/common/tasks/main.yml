@@ -13,10 +13,5 @@
     name: docker
   tags: ['configDocker', 'installDocker']
 
-- import_tasks: install-certs.yml
-  when: ansible_fqdn is search('usctvltstgitlbci')
-  tags: ['installCerts']
-
 - import_tasks: configure-runner.yml
-  when: env is search('tst')
   tags: ['configRunnerHost']
