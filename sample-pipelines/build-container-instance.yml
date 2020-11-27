@@ -38,25 +38,33 @@
       register: cloneSigCloud
 
     - set_fact:
-        kickstart_instance: "{{ ansible_distribution|lower }}-{{ansible_distribution_major_version}}_{{ansible_machine}}.ks"
+        kickstart_instance: "{{ ansible_distribution|lower }}-{{ansible_distribution_major_version}}-{{ansible_machine}}.ks"
 
     - debug:
         msg: "{{ kickstart_instance }} {{ cloneSigCloud.failed}} "
 
     - name: Build sig-cloud-instance
       shell: |
-        "/apps/sig-cloud-instance-build/docker/containerbuild.sh {{ kickstart_instance }}"
-        #echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh centos-7-x86_64.ks
+        echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh {{ kickstart_instance }}
       ignore_errors: true
       args:
+        chdir: /apps/sig-cloud-instance-build/docker
         warn: true
+      # environment: $PATH:/apps/sig-cloud-instance-build/docker
       # when: cloneSigCloud.failed == "False"
 
-    # date '+%Y%m%d'
+    - name: Get Time Stamp
+      shell: "date '+%Y%m%d'"
+      register: currentDate
+
+    - debug:
+        msg: "{{ currentDate}}"
+
     - name: Build sig-cloud-instance
       shell: |
-        docker build --force-rm -q --squash -t centos-7-x86_64 .
+        docker build --force-rm -q --squash -t {{ kickstart_instance }} .
       ignore_errors: true
       args:
-        chdir: /var/tmp/containers/20201122/centos-7-x86_64/docker
+        chdir: "/var/tmp/containers/{{ currentDate.stdout }}/{{ kitkstart_instance }}/docker"
 ...
+        #echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh centos-7-x86_64.ks

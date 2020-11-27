@@ -51,6 +51,37 @@
   args:
     warn: true
 
+- name: Copy GitLab-Runner SSH Keys
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: gitlab-runner
+    group: gitlab-runner
+    mode: 0700
+  with_items:
+    - { src: kitchenCIgitlabrunner, dst: /home/gitlab-runner/.ssh }
+
+- name: Configure gitlab-runner Authorized Keys
+  authorized_key:
+    user: gitlab-runner
+    key: "{{ item }}"
+    state: present
+    validate_certs: False
+    manage_dir: True
+  with_file:
+    - kitchenCIgitlabrunner/usctvltstgitlb-id_rsa.pub
+  when: ansible_fqdn is search('usctvltstgitlb')
+
+- name: Render gitlab-runner ssh_config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: 0600
+  with_items:
+    - { src: runner_ssh_config.j2, dst: /home/gitlab-runner/.ssh/ssh_config, owner: 'gitlab-runner', group: 'gitlab-runner' }
+
 - debug:
     msg: "{{ ansible_fqdn }}  {{ registerGitLabRunner }}"
 

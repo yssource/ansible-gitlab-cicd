@@ -1,0 +1,32 @@
+before_script:
+  - echo "Before script section"
+  - eval `ssh-agent -s`
+  - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - sudo su - -c "yum repolist"
+
+after_script:
+  - echo "After script section"
+  - sudo su - -c "yum clean all"
+build1:
+  stage: build
+  script:
+    - echo "Do your build here"
+    - sudo su - -c "yum install -y ansible jq"
+
+test1:
+  stage: test
+  script:
+    - echo "Execute a test"
+    - if [[ ! -z `rpm -qa | grep -i jq` ]]; then sudo su - -c "jq --version"; fi
+test2:
+  stage: test
+  script:
+    - echo "Execute a parallel test"
+    - if [[ ! -z `rpm -qa | grep -i ansible` ]]; then sudo su - -c "ansible --version"; fi
+deploy1:
+  stage: deploy
+  script:
+    - echo "Do your deploy here"
+    - ssh -o StrictHostKeyChecking=no gitlab-runner@usctvltstgitlbrn01v.curbstone.com "cd ~; touch test.txt"
