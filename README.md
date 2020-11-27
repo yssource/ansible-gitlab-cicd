@@ -4,7 +4,7 @@
 Setting initial root password on installation
 ===============================================
 
-# https://docs.gitlab.com/omnibus/settings/configuration.html
+https://docs.gitlab.com/omnibus/settings/configuration.html
 
 The initial password for the user root can be set at the installation time with the environment variable `GITLAB_ROOT_PASSWORD.
 
@@ -180,22 +180,22 @@ Using the API to Delete GitLab-Runners
 ========================================
 
 curl --request DELETE --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.13.3.5/api/v4/runners/3"
-
+```
 #===============================================================================
-# - name: Register gitlab-runner
-#   shell:  curl --request POST "http://{{ gitlabciUrl }}/api/v4/runners" \
-#                --form "url=http://10.13.3.5" \
-#                --form "token={{ registration_token }}" \
-#                --form "description={{ ansible_fqdn }}" \
-#                --form "tag_list=shell" \
-#                --form "locked=no" \
-#                --form "run_untagged=yes" \
-#                --form "online=true" \
-#                --form "status=connected" \
-#                --form "executor=shell"
-#   ignore_errors: false
-#   args:
-#     warn: false
+- name: Register gitlab-runner
+  shell:  curl --request POST "http://{{ gitlabciUrl }}/api/v4/runners" \
+               --form "url=http://10.13.3.5" \
+               --form "token={{ registration_token }}" \
+               --form "description={{ ansible_fqdn }}" \
+               --form "tag_list=shell" \
+               --form "locked=no" \
+               --form "run_untagged=yes" \
+               --form "online=true" \
+               --form "status=connected" \
+               --form "executor=shell"
+  ignore_errors: false
+  args:
+    warn: false
 #===============================================================================
 
 
@@ -267,7 +267,11 @@ git config --global http.sslCAPath /etc/gitlab-runner/certs/
 	sslVerify = false
 ```
 
+Test Https Connectivity using the CAfile
+============================================
 
+```
 openssl s_client -CAfile /etc/gitlab-runner/certs/usctvltstgitlbci01v.curbstone.com.crt -connect usctvltstgitlbci01v.curbstone.com:443
-
+```
 Setting the directory and the contents to be owned by gitlab-runner and setting sslCAPath in ~/gitlab-runner/.gitconfig resolves the "Peer's Certificate issuer is not recognized" error.
+
