@@ -4,13 +4,22 @@
   service:
     name: redis
     state: restarted
+  when: ansible_os_family == 'RedHat'
 
 - name: service restart postfix
   service:
     name: postfix
     state: restarted
+  when: ansible_os_family == 'RedHat'
 
 - name: service restart firewalld
   service:
     name: firewalld
     state: restarted
+  when: ansible_os_family == 'RedHat'
+
+- name: service restart ufw
+  service:
+    name: ufw
+    state: restarted
+  when: ansible_os_family == 'Debian'

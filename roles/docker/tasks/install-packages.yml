@@ -1,31 +1,65 @@
 ---
 # file: roles/common/tasks/install-packages.yml
 
-- name: Install common packages with yum
-  yum:
-    name:
-      - bc
-      - lvm2
-      - iptraf
-      - sysstat
-      - rng-tools
-      - yum-utils
-      - logrotate
-      - epel-release
-      - device-mapper-persistent-data
-    state: present
+- name: Configure RHEL Platform Dependencies
+  block:
+    - name: Install common packages with yum
+      yum:
+        name:
+          - lvm2
+          - rng-tools
+          - yum-utils
+          - logrotate
+          - epel-release
+          - device-mapper-persistent-data
+        state: present
 
-- name: Discover if [/etc/yum.repos.d/docker-ce.repo] exists
-  stat:
-    path: /etc/yum.repos.d/docker-ce.repo
-  register: docker_ce_repo
+    - name: Discover if [/etc/yum.repos.d/docker-ce.repo] exists
+      stat:
+        path: /etc/yum.repos.d/docker-ce.repo
+      register: docker_ce_repo
 
-- name: Add Docker repo
-  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  ignore_errors: true
-  args:
-    warn: false
-  register: add_docker_repo
-  when: not docker_ce_repo.stat.exists
+    - name: Add Docker repo
+      shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      ignore_errors: true
+      args:
+        warn: false
+      register: add_docker_repo
+      when: not docker_ce_repo.stat.exists
+  when: ansible_os_family == 'RedHat'
 
+- name: Install Debian Docker Dependencies
+  block:
+    - name: Install common Docker for Ubuntu
+      apt:
+        pkg:
+          - gnupg-agent
+          - ca-certificates
+          - apt-transport-https
+          - software-properties-common
+        state: present
+        update_cache: yes
+        dpkg_options: force-confdef,force-confold
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+        state: present
+
+    - name: Add Docker Repo
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+        state: present
+        update_cache: yes
+
+    - name: Install docker
+      apt:
+        pkg:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        update_cache: yes
+        dpkg_options: force-confdef,force-confold
+  when: ansible_os_family == 'Debian'
 ...

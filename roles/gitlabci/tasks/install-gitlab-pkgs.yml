@@ -1,0 +1,117 @@
+---
+#
+# Install supporting packages
+#
+- name: Install Debian GitLab Packages
+  block:
+    - name: Install Redis
+      yum:
+        name:
+          - redis
+          - policycoreutils
+        state: present
+        enablerepo: remi
+      when: ansible_os_family == 'RedHat'
+
+    - name: Enable Redis Service
+      service:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      with_items:
+        - [ 'redis','postfix' ]
+      when: ansible_os_family == 'RedHat'
+      tags: redisService
+
+    - name: Setup GitLab Repository
+      shell: "{{ stagingDir }}/script.rpm.sh"
+      ignore_errors: yes
+      args:
+        warn: yes
+
+    - name: Install GitLab-CE Runner
+      yum:
+        name:
+          - gitlab-ce
+          - "{{ stagingDir }}/gitlab-runner_amd64.rpm"
+        state: present
+        enablerepo: gitlab_gitlab-ce
+      when: ansible_fqdn is search('usctvltstgitlbci')
+
+      # notify: "{{ item }}"
+      # with_items:
+      #   - service restart redis
+      #   - service restart postfix
+      #   - service restart firewalld
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Debian GitLab Packages
+  block:
+    - name: Install Debian GitLab-CE Runner
+      apt:
+        pkg:
+          - gitlab-ce
+          - gitlab-runner
+        state: present
+        update_cache: yes
+        dpkg_options: force-confdef,force-confold
+
+      notify: "{{ item }}"
+      with_items:
+        # - service restart redis
+        # - service restart postfix
+        - service restart ufw
+
+  when: ansible_os_family == 'Debian'
+
+- name: Configure gitlab-runner sudoers config
+  copy:
+    src: sudoers.d_gitlab-runner
+    dest: /etc/sudoers.d/gitlab-runner
+    owner: root
+    group: root
+    mode: 0400
+
+- name: Create GitLab Dir
+  file:
+    dest: "{{ item.dst  }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+      - { dst: /etc/gitlab, mode: '0775' }
+      - { dst: /etc/gitlab/ssl, mode: '0755' }
+
+- name: Copy GitLab SSL Certs
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: root
+    group: root
+    mode: 0400
+  no_log: true
+  with_items:
+    - { src: vault/ca.crt, dst: /etc/gitlab/ssl/ca.crt }
+    - { src: vault/server.crt, dst: "/etc/gitlab/ssl/{{ ansible_fqdn }}.crt" }
+    - { src: vault/server.key, dst: '/etc/gitlab/ssl/{{ ansible_fqdn }}.key' }
+  when: ansible_fqdn is search('usctvltstgitlbci')
+
+- name: Render gitlab-ce template
+  template:
+    src: gitlab.rb.j2
+    dest: "{{ gitlabDir }}/gitlab.rb"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Configure gitlab-ce
+  shell: gitlab-ctl reconfigure
+  ignore_errors: true
+  args:
+    warn: true
+  environment:
+    EXTERNAL_URL: "https://{{ ansible_fqdn }}"
+    GITLAB_ROOT_PASSWORD: "{{ GitLab_Passwd }}"
+  tags: ['configGitlabCe']
+...

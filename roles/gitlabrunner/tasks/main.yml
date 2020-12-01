@@ -4,16 +4,13 @@
   #
 - import_tasks: "{{ role_path }}/../assert-env.yml"
   tags: ['assertEnv']
-  
+
 - import_tasks: configure-firewalld.yml
   tags: ['configHostFw']
 
 - import_tasks: install-runner-pkgs.yml
   tags: ['installRunnerPackages']
 
-- name: Import common role
-  import_role:
-    name: common
-  tags: ['configCerts', 'installCerts']
-
+- import_tasks: setup-gitlab-runner.yml
+  tags: ['installRunnerPackages']
 ...

@@ -20,10 +20,10 @@ verifier:
   ruby_bindir: /opt/chef/embedded/bin
 
 platforms:
-  - name: ansible-ubuntu-20.04-x86_64
+  - name: ansible-centos-7.8.2003-x86_64
     driver_config:
-      box: ansible-ubuntu-20.04-x86_64
-      box_url: file:///Users/lindsworthgarvey/vagrantRepo/ansible-ubuntu-20.04-x86_64
+      box: ansible-centos-7.8.2003-x86_64
+      box_url: file:///Users/lindsworthgarvey/vagrantRepo/ansible-centos-7.8.2003-x86_64
       synced_folders:
         - [ "~/curbStoneOps/ansiblePlaybook", "/ansiblePlaybook"]
         - [ "~/Downloads/Software", "/instImages"]
@@ -42,7 +42,7 @@ suites:
         - ["forwarded_port", {guest: 443, host: 8443}]
         - ["forwarded_port", {guest: 9090, host: 9090}]
     provisioner:
-      hosts: usctvltstgitlbci01v.curbstone.com
+      hosts: ansible-centos-7.8.2003-x86_64
       require_ansible_repo: true
       playbook: gitlabci.yml
       ansible_vault_password_file: [".kitchenCIvault"]
@@ -76,4 +76,4 @@ suites:
       require_ansible_repo: true
       playbook: gitlabrunner.yml
       ansible_vault_password_file: [".kitchenCIvault"]
-# ...
+...

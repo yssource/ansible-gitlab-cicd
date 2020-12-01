@@ -47,8 +47,6 @@
       args:
         chdir: /apps/sig-cloud-instance-build/docker
         warn: true
-      # environment: $PATH:/apps/sig-cloud-instance-build/docker
-      # when: cloneSigCloud.failed == "False"
 
     - name: Get Time Stamp
       shell: "date '+%Y%m%d'"

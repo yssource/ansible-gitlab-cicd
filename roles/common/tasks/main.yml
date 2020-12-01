@@ -8,10 +8,5 @@
 - import_tasks: "{{ role_path }}/../assert-env.yml"
   tags: ['assertEnv']
 
-- name: Import docker role
-  import_role:
-    name: docker
-  tags: ['configDocker', 'installDocker']
-
-- import_tasks: configure-runner.yml
-  tags: ['configRunnerHost']
+- import_tasks: install-common-pkgs.yml
+  tags: ['installCommonPkgs']

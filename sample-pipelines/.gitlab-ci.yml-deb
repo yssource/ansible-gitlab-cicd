@@ -1,0 +1,27 @@
+before_script:
+  - echo "Before script section"
+
+after_script:
+  - echo "After script section"
+  - sudo su - -c "apt-cache pkgnames"
+build1:
+  stage: build
+  script:
+    - echo "Do your build here"
+    - sudo su - -c "apt install -y ansible jq"
+    #- if [[ $? -eq 0 ]]; then sudo su - -c "apt autoremove"; fi
+
+test1:
+  stage: test
+  script:
+    - echo "Execute a test"
+    - if [[ ! -z `apt list ansible` ]]; then sudo su - -c "ansible --version"; fi
+test2:
+  stage: test
+  script:
+    - echo "Execute a parallel test"
+    - if [[ ! -z `apt list jq` ]]; then sudo su - -c "jq --version"; fi
+deploy1:
+  stage: deploy
+  script:
+    - echo "Do your deploy here"

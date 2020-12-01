@@ -6,4 +6,7 @@
   connection: ssh
   remote_user: root
   roles:
+    - common
+    - docker
     - gitlabci
+    - gitlabrunner

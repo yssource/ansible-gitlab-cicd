@@ -8,16 +8,11 @@
 - import_tasks: configure-firewalld.yml
   tags: ['configHost']
 
-- import_tasks: configure-pkg-repos.yml
+- import_tasks: configure-gitlab-pkgs-repos.yml
   tags: ['configHost']
 
-- import_tasks: install-packages.yml
+- import_tasks: install-gitlab-pkgs.yml
   tags: ['installPackages']
-
-- name: Import Common role
-  import_role:
-    name: common
-  tags: ['configCommonDeps', 'installCommonDeps']
 
 - debug:
     msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
