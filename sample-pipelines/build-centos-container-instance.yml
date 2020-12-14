@@ -10,9 +10,6 @@
 
   tasks:
 
-    - debug:
-        msg: "{{'{{'}}.Name{{'}}'}}"
-
     - name: more complex items to add several users
       user:
         name: "{{ item.name }}"
@@ -38,20 +35,18 @@
       register: cloneSigCloud
 
     - set_fact:
-        kickstart_instance: "{{ ansible_distribution|lower }}-{{ansible_distribution_major_version}}-{{ansible_machine}}.ks"
+        kickstart_instance: "{{ ansible_distribution|lower }}-{{ansible_distribution_major_version}}-{{ansible_machine}}"
 
     - debug:
         msg: "{{ kickstart_instance }} {{ cloneSigCloud.failed}} "
 
     - name: Build sig-cloud-instance
       shell: |
-        echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh {{ kickstart_instance }}
+        echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh "{{ kickstart_instance }}".ks
       ignore_errors: true
       args:
         chdir: /apps/sig-cloud-instance-build/docker
         warn: true
-      # environment: $PATH:/apps/sig-cloud-instance-build/docker
-      # when: cloneSigCloud.failed == "False"
 
     - name: Get Time Stamp
       shell: "date '+%Y%m%d'"
@@ -62,9 +57,8 @@
 
     - name: Build sig-cloud-instance
       shell: |
-        docker build --force-rm -q --squash -t {{ kickstart_instance }} .
+        docker build --force-rm -q --squash -t "{{ kickstart_instance }}" .
       ignore_errors: true
       args:
-        chdir: "/var/tmp/containers/{{ currentDate.stdout }}/{{ kitkstart_instance }}/docker"
+        chdir: "/var/tmp/containers/{{ currentDate.stdout }}/{{ kickstart_instance }}/docker"
 ...
-        #echo "y" | /apps/sig-cloud-instance-build/docker/containerbuild.sh centos-7-x86_64.ks

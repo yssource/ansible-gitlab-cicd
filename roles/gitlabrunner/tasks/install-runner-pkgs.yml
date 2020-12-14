@@ -1,48 +1,94 @@
 ---
 #
-# Install supporting packages
+# Install supporting runner packages
 #
-
-- name: Install GitLab
-  yum:
-    name:
-      - "{{ stagingDir }}/gitlab-runner_amd64.rpm"
-    state: present
-  register: installGitLabRunner
-
-- name: Get Helm Binary
-  get_url:
-    url: https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz
-    dest: "{{ stagingDir }}/helm-v3.3.4-linux-amd64.tar.gz"
-    checksum: 'sha256:b664632683c36446deeb85c406871590d879491e3de18978b426769e43a1e82c'
+- name: Create Staging Dir
+  file:
+    path: "{{ stagingDir }}"
+    state: directory
+    owner: root
+    group: root
     mode: 0755
 
-  notify: "{{ item }}"
-  with_items:
-    - service restart firewalld
+- name: Configure Debian Gitlab-CI Requirements
+  block:
+    - name: Install common packages with yum
+      yum:
+        name:
+          - yum-utils
+          - epel-release
+          - logrotate
+          - postfix
+          - openssh-server
+          - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+        state: present
 
-...
+    - name: Get NodeJS Repo Script
+      get_url:
+        url: https://rpm.nodesource.com/setup_10.x
+        dest: "{{ stagingDir }}/setup_10.x"
+        mode: 0755
 
+    - name: Setup NodeJS Repository
+      shell: "{{ stagingDir }}/setup_10.x"
+      ignore_errors: yes
+      args:
+        warn: yes
 
-#===============================================================================
-#
-# TODO
-#   Register Runners https://docs.gitlab.com/runner/register/
-#
-#===============================================================================
+    - name: Install NodeJS
+      yum:
+        name:
+          - nodejs
+        state: present
 
-# - name: Render gitlab-runner Register config
-#   template:
-#     src: config.toml.j2
-#     dest: /etc/gitlab-runner/config.toml
-#     owner: gitlab-runner
-#     group: gitlab-runner
-#     mode: 0644
-#
-# - name: Generate GitLab-Runner ssh-keys
-#   shell: ssh-keygen -t rsa -N "" -b 2048 -f ~/.ssh/id_rsa -C gitlab-runner@{{ ansible_fqdn }}
-#   ignore_errors: true
-#   args:
-#     warn: true
-#
-#===============================================================================
+    - name: Get GitLab Runner Repo
+      get_url:
+        url: https://gitlab-runner-downloads.s3.amazonaws.com/latest/rpm/gitlab-runner_amd64.rpm
+        dest: "{{ stagingDir }}/gitlab-runner_amd64.rpm"
+        mode: 0755
+
+    - name: Install GitLab Runner
+      yum:
+        name:
+          - "{{ stagingDir }}/gitlab-runner_amd64.rpm"
+        state: present
+      register: installGitLabRunner
+
+      notify: "{{ item }}"
+      with_items:
+        - service restart firewalld
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure Debian Gitlab-CI Requirements
+  block:
+
+    - name: Install NodeJS
+      apt:
+        pkg:
+          - nodejs
+        autoremove: yes
+        state: present
+    
+    - name: Get Debian GitLab Runner Repo
+      get_url:
+        url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh
+        dest: "{{ stagingDir }}/script.gitlab-runner.deb.sh"
+        mode: 0755
+
+    - name: Setup Debian GitLab-CE Repository
+      shell: "{{ stagingDir }}/script.gitlab-runner.deb.sh"
+      ignore_errors: yes
+      args:
+        warn: yes
+
+    - name: Install Debian GitLab-runner
+      apt:
+        pkg:
+          - gitlab-runner
+        update_cache: yes
+
+      notify: "{{ item }}"
+      with_items:
+        - service restart ufw
+
+  when: ansible_os_family == 'Debian'

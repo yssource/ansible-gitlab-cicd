@@ -8,15 +8,5 @@
 - import_tasks: "{{ role_path }}/../assert-env.yml"
   tags: ['assertEnv']
 
-- name: Import docker role
-  import_role:
-    name: docker
-  tags: ['configDocker', 'installDocker']
-
-- import_tasks: install-certs.yml
-  when: ansible_fqdn is search('usctvltstgitlbci')
-  tags: ['installCerts']
-
-- import_tasks: configure-runner.yml
-  when: env is search('tst')
-  tags: ['configRunnerHost']
+- import_tasks: install-common-pkgs.yml
+  tags: ['installCommonPkgs']

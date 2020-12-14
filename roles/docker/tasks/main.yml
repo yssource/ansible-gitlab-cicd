@@ -5,5 +5,5 @@
 - import_tasks: install-packages.yml
   tags: ['installPackages']
 
-- import_tasks: configure.yml
-  tags: docker
+- import_tasks: configure-docker.yml
+  tags: postInstallConfigDocker

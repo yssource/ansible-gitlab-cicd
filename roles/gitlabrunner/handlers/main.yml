@@ -14,3 +14,8 @@
   service:
     name: firewalld
     state: restarted
+
+- name: service restart ufw
+  service:
+    name: ufw
+    state: restarted

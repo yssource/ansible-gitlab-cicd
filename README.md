@@ -93,7 +93,32 @@ Using the API to Register Gitlab-Runner
     warn: false -->
 #===============================================================================
 ```
+Ansible Task to Register gitlabrunner
 
+Relies on the following variables being defined:
+
+```
+vars:
+  gitlabciUrl: <gitlabciUrl>
+  registration_token: <registration_token> # This is a predefined token
+  description: <ansible_fqdn> # Derived from Ohai
+
+tasks:
+  - name: Register gitlab-runner
+    shell:  curl --request POST "http://{{ gitlabciUrl }}/api/v4/runners" \
+                 --form "url=http://10.13.3.5" \
+                 --form "token={{ registration_token }}" \
+                 --form "description={{ ansible_fqdn }}" \
+                 --form "tag_list=shell" \
+                 --form "locked=no" \
+                 --form "run_untagged=yes" \
+                 --form "online=true" \
+                 --form "status=connected" \
+                 --form "executor=shell"
+    ignore_errors: false
+    args:
+      warn: false
+```
 [root@usctvltstgitlbci01v gitlab-runner]# curl -s --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.13.3.5/api/v4/runners/all" | jq -r '.'
 + jq -r .
 + curl -s --header 'PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq' http://10.13.3.5/api/v4/runners/all
@@ -179,25 +204,9 @@ gitlab-runner register --tag-list shell \
 Using the API to Delete GitLab-Runners
 ========================================
 
+```
 curl --request DELETE --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.13.3.5/api/v4/runners/3"
 ```
-#===============================================================================
-- name: Register gitlab-runner
-  shell:  curl --request POST "http://{{ gitlabciUrl }}/api/v4/runners" \
-               --form "url=http://10.13.3.5" \
-               --form "token={{ registration_token }}" \
-               --form "description={{ ansible_fqdn }}" \
-               --form "tag_list=shell" \
-               --form "locked=no" \
-               --form "run_untagged=yes" \
-               --form "online=true" \
-               --form "status=connected" \
-               --form "executor=shell"
-  ignore_errors: false
-  args:
-    warn: false
-#===============================================================================
-
 
 Manually configuring HTTPS
 =================================
@@ -274,4 +283,3 @@ Test Https Connectivity using the CAfile
 openssl s_client -CAfile /etc/gitlab-runner/certs/usctvltstgitlbci01v.curbstone.com.crt -connect usctvltstgitlbci01v.curbstone.com:443
 ```
 Setting the directory and the contents to be owned by gitlab-runner and setting sslCAPath in ~/gitlab-runner/.gitconfig resolves the "Peer's Certificate issuer is not recognized" error.
-

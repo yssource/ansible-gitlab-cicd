@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+
+  vars:
+    gitLab_email:
+      smtp_server: smtp.curbstone.com
+      smtp_port: 25
+
+  tasks:
+
+    - name:
+      apt:
+        name:
+          - apt-transport-https
+        update_cache: yes
+
+
+    - name: Add Helm GPG Key
+      apt_key:
+        url:  https://baltocdn.com/helm/signing.asc
+        state: present
+
+    - name: Add Helm Repository
+      apt_repository:
+        repo: deb https://baltocdn.com/helm/stable/debian/ all main
+        state: present
+        update_cache: yes
+
+    - name:
+      apt:
+        name:
+          - helm
+        update_cache: yes

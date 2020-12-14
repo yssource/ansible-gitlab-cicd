@@ -1,0 +1,85 @@
+---
+#
+# Install supporting packages
+#
+- name: Create Staging Dir
+  file:
+    path: "{{ stagingDir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Configure Debian Gitlab-CI Requirements
+  block:
+
+    - name: Install NodeJS
+      apt:
+        pkg:
+          - nodejs
+        autoremove: yes
+        state: present
+
+    - name: Get Debian GitLab Repo
+      get_url:
+        url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+        dest: "{{ stagingDir }}/script.gitlab-ce.deb.sh"
+        mode: 0755
+
+    - name: Get Debian GitLab Runner Repo
+      get_url:
+        url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh
+        dest: "{{ stagingDir }}/script.gitlab-runner.deb.sh"
+        mode: 0755
+
+    - name: Setup Debian GitLab-CE Repository
+      shell: "{{ stagingDir }}/script.gitlab-ce.deb.sh"
+      ignore_errors: yes
+      args:
+        warn: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Configure RedHat Gitlab-CI Requirements
+  block:
+    - name: Install common packages with yum
+      yum:
+        name:
+          - bsdtar
+          - yum-utils
+          - epel-release
+          - postfix
+          - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+        state: present
+
+    - name: Get NodeJS Repo Script
+      get_url:
+        url: https://rpm.nodesource.com/setup_10.x
+        dest: "{{ stagingDir}}/setup_10.x"
+        mode: 0755
+
+    - name: Setup NodeJS Repository
+      shell: "{{ stagingDir }}/setup_10.x"
+      ignore_errors: yes
+      args:
+        warn: yes
+
+    - name: Install NodeJS
+      yum:
+        name:
+          - nodejs
+        state: present
+
+    - name: Get GitLab Repo
+      get_url:
+        url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
+        dest: "{{ stagingDir }}/script.rpm.sh"
+        mode: 0755
+
+    - name: Get GitLab Runner Repo
+      get_url:
+        url: https://gitlab-runner-downloads.s3.amazonaws.com/latest/rpm/gitlab-runner_amd64.rpm
+        dest: "{{ stagingDir }}/gitlab-runner_amd64.rpm"
+        mode: 0755
+  when: ansible_os_family == 'RedHat'
+
+...
