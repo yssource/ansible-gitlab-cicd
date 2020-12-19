@@ -20,7 +20,8 @@ gitlab-runner register \
 
 
 
-
+Create GitLab Api Access Token
+========================================
 ```
 gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: \
   [:api, :write_repository ], \
@@ -29,6 +30,9 @@ gitlab-rails runner "token = User.find_by_username('root').personal_access_token
   token.save!"
 ```
 
+Revoke GitLab Api Access Token
+========================================
+
 ```
 gitlab-rails runner "PersonalAccessToken.find_by_token('tHb88257Z40e349b97a5').revoke!"
 ```
@@ -36,6 +40,9 @@ gitlab-rails runner "PersonalAccessToken.find_by_token('tHb88257Z40e349b97a5').r
 ```
 curl -kv -s --header "PRIVATE-TOKEN: tHb88257Z40e349b97a5" http://localhost:80/api/v4/user | jq '.'
 ```
+
+Create GitLab Project groups
+========================================
 
 ```
 curl -v --cacert /etc/gitlab/ssl/ca.crt --cert /etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.crt \

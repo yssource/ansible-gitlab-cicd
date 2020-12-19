@@ -13,6 +13,7 @@
       apt:
         pkg:
           - bc
+          - jq
           - git
           - wget
           - gzip
