@@ -21,11 +21,22 @@ Token Must be exactly 20 characters
 set -x
 gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api, :write_repository, :sudo], name: 'root'); token.set_token('vu1zFo5okhrn69uBLApq'); token.save!"
 ```
+or
+```
 
+vu1zFo5okhrn69uBLApq
+
+user = User.find_by_username('root')
+token = user.personal_access_tokens.create(scopes: [:read_user, :read_repository], name: 'Automation token')
+token.set_token('token-string-here123')
+token.save!
+```
 Verify API User Access Token
 
 ```
-[root@usctvltstgitlbci01v ~]# curl -s --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" http://localhost:80/api/v4/user | jq '.'
+
+--cacert --key --cert
+[root@usctvltstgitlbci01v ~]# curl -s --header "PRIVATE-TOKEN: 60b88257740e349b97a5" http://localhost:80/api/v4/user | jq '.'
 {
   "id": 1,
   "name": "Administrator",

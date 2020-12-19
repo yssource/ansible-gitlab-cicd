@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+
+  vars:
+    gitlabciUrl: "https://{{ ansible_fqdn }}:443"
+    gitlabAccessToken: 'YyKFgLqz98pnnRiSAYKZ'
+
+
+  tasks:
+
+    - name: Create GitLab Group
+      uri:
+        url: "{{ gitlabciUrl }}/api/v4/groups"
+        validate_certs: false
+        # client_key: '/etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.key'
+        # client_cert: '/etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.crt'
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          PRIVATE_TOKEN: "{{ gitlabAccessToken }}"
+        # body: "{{ lookup('file','terraform.json') }}"
+        body: { "name": "terraform", "path": "terraform", "description": "DevOps management Repo" }
+        body_format: json
+        status_code: 204
+        force_basic_auth: yes
+        return_content: yes
+      register: createGitlabGrp
+
+    - debug:
+        msg: "{{ createGitlabGrp }}"

@@ -61,7 +61,7 @@
         # - service restart redis
         # - service restart postfix
         - service restart ufw
-
+        
   when: ansible_os_family == 'Debian'
 
 - name: Configure gitlab-runner sudoers config
@@ -112,6 +112,6 @@
     warn: true
   environment:
     EXTERNAL_URL: "https://{{ ansible_fqdn }}"
-    GITLAB_ROOT_PASSWORD: "{{ GitLab_Passwd }}"
+    GITLAB_ROOT_PASSWORD: "{{ initial_root_password }}"
   tags: ['configGitlabCe']
 ...
