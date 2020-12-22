@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+  gather_facts: true
+  tags: always
+
+  vars:
+    docker_mounts:
+      - /apps/docker
+      - /home/appuser
+
+  tasks:
+
+    - name: more complex items to add several users
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        groups: "{{ item.groups }}"
+        state: present
+      with_items:
+        - { name: appuser, uid: 1001, groups: docker }
+        - { name: dockermgr, uid: 1002, groups: docker }
+
+
+    - name: Install common Docker for Ubuntu
+      apt:
+        pkg:
+          - debootstrap
+        state: present
+        update_cache: yes
+        dpkg_options: force-confdef,force-confold
+
+    - name: Create Debian Docker Image
+      shell: |
+        debootstrap {{ansible_distribution_release }} {{ ansible_distribution_release }}
+      ignore_errors: true
+      args:
+        chdir: /tmp/
+        warn: true
+
+    - name: Get Time Stamp
+      shell: "date '+%Y%m%d'"
+      register: currentDate
+
+    - debug:
+        msg: "{{ currentDate}}"
+
+
+    - name: Create Debian Docker Container
+      shell: |
+        tar -C /tmp/{{ ansible_distribution_release }} -c . | docker import - {{ ansible_distribution_release }}
+      ignore_errors: true
+      args:
+        chdir: /tmp
+        warn: true
+
+...

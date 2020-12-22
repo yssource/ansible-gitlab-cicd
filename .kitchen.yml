@@ -20,10 +20,10 @@ verifier:
   ruby_bindir: /opt/chef/embedded/bin
 
 platforms:
-  - name: ansible-ubuntu-20.04-x86_64
+  - name: ansible-ubuntu-18.0.4-x86_64
     driver_config:
-      box: ansible-ubuntu-20.04-x86_64
-      box_url: file:///Users/lindsworthgarvey/vagrantRepo/ansible-ubuntu-20.04-x86_64
+      box: ansible-ubuntu-18.0.4-x86_64
+      box_url: file:///Users/lindsworthgarvey/vagrantRepo/ansible-ubuntu-18.0.4-x86_64
       synced_folders:
         - [ "~/curbStoneOps/ansiblePlaybook", "/ansiblePlaybook"]
         - [ "~/Downloads/Software", "/instImages"]
@@ -45,7 +45,7 @@ suites:
       hosts: usctvltstgitlbci01v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabci.yml
-      ansible_vault_password_file: [".kitchenCIvault"]
+      ansible_vault_password_file: [".kitchenCIvault", ".symprdGTLBCIvault"]
 
   - name: gitlab-runner-01
     driver:
@@ -60,7 +60,7 @@ suites:
       hosts: ansible-centos-7.8.2003-x86_64
       require_ansible_repo: true
       playbook: gitlabrunner.yml
-      ansible_vault_password_file: [".kitchenCIvault"]
+      ansible_vault_password_file: [".kitchenCIvault", ".symprdGTLBCIvault" ]
 
   - name: gitlab-runner-02
     driver:
@@ -72,8 +72,8 @@ suites:
       network:
         - ["private_network", {ip: "10.13.3.7"}]
     provisioner:
-      hosts: ansible-centos-7.8.2003-x86_64
+      hosts: usctvltstgitlbrn02v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabrunner.yml
-      ansible_vault_password_file: [".kitchenCIvault"]
+      ansible_vault_password_file: [".kitchenCIvault", ".symprdGTLBCIvault"]
 # ...

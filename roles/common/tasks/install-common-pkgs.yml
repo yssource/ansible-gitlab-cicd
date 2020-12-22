@@ -6,13 +6,14 @@
     owner: root
     group: root
     mode: 0755
-    
+
 - name: Install Common Debian Gitlab-CI Packages
   block:
     - name: Install common packages with apt
       apt:
         pkg:
           - bc
+          - jq
           - git
           - wget
           - gzip
@@ -28,37 +29,28 @@
         update_cache: yes
         dpkg_options: force-confdef,force-confold
 
-    # - name: Install common Docker for Ubuntu
-    #   apt:
-    #     pkg:
-    #       - gnupg-agent
-    #       - ca-certificates
-    #       - apt-transport-https
-    #       - software-properties-common
-    #     state: present
-    #     update_cache: yes
-    #     dpkg_options: force-confdef,force-confold
-    #
-    # - name: Add Docker GPG key
-    #   apt_key:
-    #     url: https://download.docker.com/linux/ubuntu/gpg
-    #     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-    #     state: present
-    #
-    # - name: Add Docker Repo
-    #   apt_repository:
-    #     repo: deb https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
-    #     state: present
-    #     update_cache: yes
-    #
-    # - name: Install docker
-    #   apt:
-    #     pkg:
-    #       - docker-ce
-    #       - docker-ce-cli
-    #       - containerd.io
-    #     update_cache: yes
-    #     dpkg_options: force-confdef,force-confold
+    - name:
+      apt:
+        name:
+          - apt-transport-https
+        update_cache: yes
+
+    - name: Add Helm GPG Key
+      apt_key:
+        url:  https://baltocdn.com/helm/signing.asc
+        state: present
+
+    - name: Add Helm Repository
+      apt_repository:
+        repo: deb https://baltocdn.com/helm/stable/debian/ all main
+        state: present
+        update_cache: yes
+
+    - name:
+      apt:
+        name:
+          - helm
+        update_cache: yes
   when: ansible_os_family == 'Debian'
 
 

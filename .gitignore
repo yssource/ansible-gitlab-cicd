@@ -1,5 +1,5 @@
 *.kitchen
-*.DS_Store
+***.DS_Store
 *.retry
 Gemfile.lock
 .kitchen/

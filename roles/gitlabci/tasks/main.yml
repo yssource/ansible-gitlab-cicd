@@ -15,5 +15,5 @@
   tags: ['installPackages']
 
 - debug:
-    msg: "GITLAB_ROOT_PASSWORD: {{ GitLab_Passwd }}"
+    msg: "GITLAB_ROOT_PASSWORD: {{ initial_root_password }}"
   when: env is search('tst')

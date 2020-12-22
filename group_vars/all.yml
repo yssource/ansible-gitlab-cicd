@@ -3,7 +3,9 @@ localBin: /usr/local/bin
 stagingDir: "/tmp/instImages"
 helmVer:  "v3.3.4"
 registration_token: "vu1zFo5okhrn69uBLApq"
-initial_root_password: "{{ GitLab_Passwd }}"
+initial_root_password: "{{ GitLab_Passwd if env is search('tst')
+                          else Prd_GitLab_Passwd
+                          }}"
 git_data_dir: "/apps/git-data"
 gitlabciUrl: "{{ 'usctvltstgitlbci01v.curbstone.com' if env is search('tst')
               else 'usctvlprdgitlbci01v.curbstone.com'
