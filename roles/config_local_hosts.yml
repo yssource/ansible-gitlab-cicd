@@ -10,3 +10,5 @@
     - { ip: 10.13.3.6, fqdn: usctvltstgitlbrn01v.curbstone.com, name: usctvltstgitlbrn01v }
     - { ip: 10.13.3.7, fqdn: usctvltstgitlbrn02v.curbstone.com, name: usctvltstgitlbrn02v }
   when:  ansible_fqdn is search('usctvltstgitlb')
+
+...
