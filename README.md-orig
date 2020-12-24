@@ -1,42 +1,5 @@
 # ansible-gitlab-cicd
-
-## Table of contents
-* [General info](#general-info)
-* [Technology Stack](#technologies)
-* [Setup](#setup)
-
-## General info
-This project uses Ansible to install, configure GitLab CI Server, installs and registers GitLab Runners.
-
-## Technologies
-Project is created with:
-* GitLab-CI EE: 13.7.1-ee
-* GitLab-Runner EE: 13.7.0
-* Docker-CE: 19.03.13
-
-## Setup
-Running this project locally, requires Test-Kitchen installed via
-* ChefDK,
-* Oracle VirtualBox
-* Vagrant
-* Kitchen-Ansible
-
-
-## Project Roles
-* common
-* docker
-* gitlabci
-* gitlabrunner
-
-```
-ansible-playbook -i inventory/gitlab-ci -u <username> --
-```
-$ cd ../ansible-gitlab-cicd
-$ kitchen create ==> kitchen converge ==> kitchen verify ==> kitchen destroy
-$
-```
-
-
+--------------------------------------
 
 Setting initial root password on installation
 ===============================================

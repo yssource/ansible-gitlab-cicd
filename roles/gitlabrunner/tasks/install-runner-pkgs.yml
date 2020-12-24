@@ -68,14 +68,14 @@
           - nodejs
         autoremove: yes
         state: present
-    
+
     - name: Get Debian GitLab Runner Repo
       get_url:
         url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh
         dest: "{{ stagingDir }}/script.gitlab-runner.deb.sh"
         mode: 0755
 
-    - name: Setup Debian GitLab-CE Repository
+    - name: Setup Debian GitLab-EE Repository
       shell: "{{ stagingDir }}/script.gitlab-runner.deb.sh"
       ignore_errors: yes
       args:
@@ -84,7 +84,7 @@
     - name: Install Debian GitLab-runner
       apt:
         pkg:
-          - gitlab-runner
+          - gitlab-runner={{ gitlabEE.runnerVersion }}
         update_cache: yes
 
       notify: "{{ item }}"

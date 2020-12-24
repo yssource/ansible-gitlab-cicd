@@ -1,6 +1,0 @@
-curl -k -v --cacert /etc/gitlab/ssl/ca.crt --cert /etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.crt \
-  --key /etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.key \
-  --request POST --header "PRIVATE-TOKEN: JWFaYj_wrsqkvNU9obFx" \
-  --header "Content-Type: application/json" \
-  --data '{ "name": "terragrunt", "path": "terragrunt", "description": "IaC  management Repo" }' \
-  "https://usctvltstgitlbci01v.curbstone.com:443/api/v4/groups" | jq '.id'

@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+
+  vars:
+    Prd_GitLab_Passwd: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30343738393539346637633064303062323038633462613233393765343735373365643836646161
+          6338623063623061643862336463393830623932613561330a363536633661613535623931636631
+          33613965346438393939353733306639343031666630626232613431663136613538333237633762
+          3836666334356634330a306433313235383039653433636233386363313535623434386635353964
+          30643633376232353965636366323262376238366337363632303038663532303665
+
+    gitlabAccessToken: "{{ lookup('password', '/dev/null length=20')}}"
+
+    #registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if ansible_hostname is search('symtstgtlbcivm001')
+    #          else '{{ gitlabAccessToken | quote }}'
+    #       }}"
+    registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if ansible_hostname is search('symprdgtlbcivm001')
+                        else  gitlabAccessToken
+                       }}"
+
+  tasks:
+
+      - debug:
+          msg: "{{ Prd_GitLab_Passwd }}"
+
+      - debug:
+          msg: "GitLabAccessToken is ==> {{ gitlabAccessToken }}"
+
+      - debug:
+              msg: "RegistrationToken ==> {{ registration_token }}"

@@ -30,4 +30,4 @@
         - "443"
         - "9090"
         - "6379"
-      when: ansible_fqdn is search('usctvltstgitlbci01v') and ansible_os_family == 'Debian'
+      when: ansible_hostname is search('usctvltstgitlbci01v') and ansible_os_family == 'Debian'

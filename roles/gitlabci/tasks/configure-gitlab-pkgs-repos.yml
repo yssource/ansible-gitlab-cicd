@@ -22,8 +22,8 @@
 
     - name: Get Debian GitLab Repo
       get_url:
-        url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
-        dest: "{{ stagingDir }}/script.gitlab-ce.deb.sh"
+        url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh
+        dest: "{{ stagingDir }}/script.gitlab-ee.deb.sh"
         mode: 0755
 
     - name: Get Debian GitLab Runner Repo
@@ -32,8 +32,8 @@
         dest: "{{ stagingDir }}/script.gitlab-runner.deb.sh"
         mode: 0755
 
-    - name: Setup Debian GitLab-CE Repository
-      shell: "{{ stagingDir }}/script.gitlab-ce.deb.sh"
+    - name: Setup Debian GitLab-EE Repository
+      shell: "{{ stagingDir }}/script.gitlab-ee.deb.sh"
       ignore_errors: yes
       args:
         warn: yes
@@ -71,7 +71,7 @@
 
     - name: Get GitLab Repo
       get_url:
-        url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
+        url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh
         dest: "{{ stagingDir }}/script.rpm.sh"
         mode: 0755
 

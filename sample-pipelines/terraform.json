@@ -1,5 +1,12 @@
-{
-	"name": "terraform",
-	"path": "terraform",
-	"description": "DevOps management Repo"
-}
+[
+  {
+    "name": "terraform",
+    "path": "terragrunt",
+    "description": "IaC  management Repo"
+  },
+  {
+    "name": "devops",
+    "path": "devops",
+    "description": "DevOps management Repo"
+  }
+]

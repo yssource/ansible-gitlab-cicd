@@ -45,7 +45,7 @@ suites:
       hosts: usctvltstgitlbci01v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabci.yml
-      ansible_vault_password_file: [".kitchenCIvault"]
+      ansible_vault_password_file: [".kitchenCIvault", ".usctvlprdGTLBCIvault" ]
 
   - name: gitlab-runner-01
     driver:
@@ -60,7 +60,7 @@ suites:
       hosts: usctvltstgitlbrn01v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabrunner.yml
-      ansible_vault_password_file: [".kitchenCIvault"]
+      ansible_vault_password_file: [".kitchenCIvault", ".usctvlprdGTLBCIvault" ]
 
   - name: gitlab-runner-02
     driver:
@@ -75,5 +75,5 @@ suites:
       hosts: usctvltstgitlbrn02v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabrunner.yml
-      ansible_vault_password_file: [".kitchenCIvault"]
+      ansible_vault_password_file: [".kitchenCIvault", ".usctvlprdGTLBCIvault" ]
 # ...
