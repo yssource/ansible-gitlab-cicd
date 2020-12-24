@@ -47,6 +47,17 @@
 
 - name: Install Debian GitLab Packages
   block:
+
+    - name: Check if GitLab-ctl file exists.
+      stat:
+        path: /usr/bin/gitlab-ctl
+      register: gitlab_ctl
+
+    - name: Check if GitLab Config file exists.
+      stat:
+        path: /etc/gitlab/gitlab.rb
+      register: gitlab_config_file
+
     - name: Install Debian GitLab-CE Runner
       apt:
         pkg:
@@ -55,13 +66,14 @@
         state: present
         update_cache: yes
         dpkg_options: force-confdef,force-confold
+      when: not gitlab_ctl.stat.exists
 
       notify: "{{ item }}"
       with_items:
         # - service restart redis
         # - service restart postfix
         - service restart ufw
-        
+
   when: ansible_os_family == 'Debian'
 
 - name: Configure gitlab-runner sudoers config

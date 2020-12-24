@@ -8,15 +8,15 @@
 
   tasks:
 
-     # - name: Create Personal Access Token
-     #   shell: |
-     #     gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: \
-     #     [:api, :write_repository, :sudo], name: 'root'); token.set_token('{{ gitlabAccessToken }}'); token.save!"
-     #   ignore_errors: yes
-     #   args:
-     #     warn:
-     #       true
-     #
+     - name: Create Personal Access Token
+       shell: |
+         gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: \
+         [:api, :write_repository, :sudo], name: 'root'); token.set_token('{{ gitlabAccessToken }}'); token.save!"
+       ignore_errors: yes
+       args:
+         warn:
+           true
+
      # - name: Create GitLab Group
      #   shell: |
      #     curl -k -v --cacert /etc/gitlab/ssl/ca.crt --cert /etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.crt \
@@ -38,8 +38,8 @@
          client_cert: '/etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.crt'
          method: POST
          headers:
-           PRIVATE_TOKEN: 'JWFaYj_wrsqkvNU9obFx'
-           # Content-Type: "application/json"
+           PRIVATE_TOKEN: '{{ gitlabAccessToken }}'
+           Content-Type: "application/json"
          body: "{{ lookup('file','./terraform.json') }}"
          # body: { "name": "terragrunt", "path": "terragrunt", "description": "DevOps management Repo" }
          body_format: json
