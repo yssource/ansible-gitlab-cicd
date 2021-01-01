@@ -6,9 +6,9 @@
       {{ item.ip }} {{ item.fqdn }} {{ item.name }}
     marker: "#{ mark } ANSIBLE MANAGED BLOCK {{ item.name }}"
   with_items:
-    - { ip: 10.13.3.5, fqdn: usctvltstgitlbci01v.curbstone.com, name: usctvltstgitlbci01v }
-    - { ip: 10.13.3.6, fqdn: usctvltstgitlbrn01v.curbstone.com, name: usctvltstgitlbrn01v }
-    - { ip: 10.13.3.7, fqdn: usctvltstgitlbrn02v.curbstone.com, name: usctvltstgitlbrn02v }
-  when:  ansible_fqdn is search('usctvltstgitlb')
+    - { ip: 10.13.3.5, fqdn: symtstgtlbcivm001.symbridge.com, name: symtstgtlbcivm001 }
+    - { ip: 10.13.3.6, fqdn: symtstgtlbrnvm001.symbridge.com, name: symtstgtlbrnvm001 }
+    - { ip: 10.13.3.7, fqdn: symtstgtlbrnvm002.symbridge.com, name: symtstgtlbrnvm002 }
+  when:  ansible_hostname is search('symtstgtlb')
 
 ...

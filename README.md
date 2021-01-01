@@ -35,7 +35,7 @@ Verify API User Access Token
 
 ```
 
---cacert --key --cert
+
 [root@usctvltstgitlbci01v ~]# curl -s --header "PRIVATE-TOKEN: 60b88257740e349b97a5" http://localhost:80/api/v4/user | jq '.'
 {
   "id": 1,

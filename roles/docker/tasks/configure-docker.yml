@@ -45,17 +45,6 @@
         - [ 'docker' ]
       tags: service
 
-    - name: template | {{ item }}
-      template:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        mode: "{{ item.mode }}"
-        owner: root
-        group: "{{ item.group }}"
-      with_items:
-        - { src: 'docker.conf.j2', dest: '/etc/rsyslog.d/docker.conf', owner: 'root', group: 'docker', mode: '0644' }
-      tags: dockerdRsyslog_config
-
     - name: Copy docker config files
       copy:
         src: "{{ item.src }}"

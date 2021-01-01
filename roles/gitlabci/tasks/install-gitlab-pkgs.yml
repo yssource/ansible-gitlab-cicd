@@ -2,6 +2,17 @@
 #
 # Install supporting packages
 #
+
+- name: Check if GitLab-ctl file exists.
+  stat:
+    path: /usr/bin/gitlab-ctl
+  register: gitlab_ctl
+
+- name: Check if GitLab Config file exists.
+  stat:
+    path: /etc/gitlab/gitlab.rb
+  register: gitlab_config_file
+
 - name: Install Debian GitLab Packages
   block:
     - name: Install Redis
@@ -29,40 +40,23 @@
       args:
         warn: yes
 
-    - name: Install GitLab-CE Runner
+    - name: Install GitLab-EE Runner
       yum:
         name:
-          - gitlab-ce
+          - gitlab-ee
           - "{{ stagingDir }}/gitlab-runner_amd64.rpm"
         state: present
-        enablerepo: gitlab_gitlab-ce
-      when: ansible_fqdn is search('usctvltstgitlbci')
+        enablerepo: gitlab_gitlab-ee
+      when: "ansible_fqdn is search('symtstgtlbcivm001') and not gitlab_ctl.stat.exists"
 
-      # notify: "{{ item }}"
-      # with_items:
-      #   - service restart redis
-      #   - service restart postfix
-      #   - service restart firewalld
   when: ansible_os_family == 'RedHat'
 
 - name: Install Debian GitLab Packages
   block:
-
-    - name: Check if GitLab-ctl file exists.
-      stat:
-        path: /usr/bin/gitlab-ctl
-      register: gitlab_ctl
-
-    - name: Check if GitLab Config file exists.
-      stat:
-        path: /etc/gitlab/gitlab.rb
-      register: gitlab_config_file
-
-    - name: Install Debian GitLab-CE Runner
+    - name: Install Debian GitLab-EE Packages
       apt:
         pkg:
-          - gitlab-ce
-          - gitlab-runner
+          - gitlab-ee={{ gitlabEE.ciVersion }}
         state: present
         update_cache: yes
         dpkg_options: force-confdef,force-confold
@@ -70,8 +64,6 @@
 
       notify: "{{ item }}"
       with_items:
-        # - service restart redis
-        # - service restart postfix
         - service restart ufw
 
   when: ansible_os_family == 'Debian'
@@ -94,22 +86,12 @@
   with_items:
       - { dst: /etc/gitlab, mode: '0775' }
       - { dst: /etc/gitlab/ssl, mode: '0755' }
+#
+# TODO:
+#   Add task for configuring TLS
+#
 
-- name: Copy GitLab SSL Certs
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dst }}"
-    owner: root
-    group: root
-    mode: 0400
-  no_log: true
-  with_items:
-    - { src: vault/ca.crt, dst: /etc/gitlab/ssl/ca.crt }
-    - { src: vault/server.crt, dst: "/etc/gitlab/ssl/{{ ansible_fqdn }}.crt" }
-    - { src: vault/server.key, dst: '/etc/gitlab/ssl/{{ ansible_fqdn }}.key' }
-  when: ansible_fqdn is search('usctvltstgitlbci')
-
-- name: Render gitlab-ce template
+- name: Render gitlab-ee template
   template:
     src: gitlab.rb.j2
     dest: "{{ gitlabDir }}/gitlab.rb"
@@ -117,13 +99,13 @@
     group: root
     mode: 0600
 
-- name: Configure gitlab-ce
+- name: Configure gitlab-ee
   shell: gitlab-ctl reconfigure
   ignore_errors: true
   args:
     warn: true
   environment:
-    EXTERNAL_URL: "https://{{ ansible_fqdn }}"
+    EXTERNAL_URL: "{{ gitlabciUrl }}"
     GITLAB_ROOT_PASSWORD: "{{ initial_root_password }}"
   tags: ['configGitlabCe']
 ...

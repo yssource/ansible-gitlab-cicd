@@ -1,0 +1,55 @@
+---
+
+- set_fact:
+    gitlabAccessToken: "{{ lookup('password', '/dev/null length=20')}}"
+
+- debug:
+    msg: "{{ gitlabAccessToken }}"
+
+- name: Create Personal Access Token
+  shell: |
+    gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: \
+    [:api, :write_repository, :sudo], name: 'root'); token.set_token('{{ gitlabAccessToken }}'); token.save!"
+  ignore_errors: yes
+  args:
+    warn:
+      true
+  async: 45
+  poll: 9
+
+- name: Disable WebUI SignIn
+  shell: |
+    curl -v --request PUT --header "PRIVATE-TOKEN: {{ gitlabAccessToken }}" \
+      "{{ gitlabciUrl }}/api/v4/application/settings?signup_enabled=false&default_project_visibility=internal"
+  ignore_errors: true
+  args:
+    warn: false
+
+- name: Create GitLab Group
+  uri:
+    url:  "{{ gitlabciUrl }}/api/v4/groups"
+    validate_certs: no
+    method: POST
+    headers:
+      Authorization: "Bearer {{ gitlabAccessToken }}"
+      Content-Type: "application/json"
+    body: "{{ item }}"
+    body_format: json
+    status_code: [201, 200]
+    return_content: yes
+  with_items:
+    - { "name": "IT-DevOps", "path": "DevOps", "description": "DevOps Repository Group" }
+    - { "name": "IT-Security", "path": "SecOps", "description": "IT Security Repository Group" }
+    - { "name": "IT-Engineering", "path": "AppEng", "description": "Application Engineering Repository Group" }
+
+- name: Create Personal Access Token
+  shell: |
+    gitlab-rails runner "PersonalAccessToken.find_by_token('{{ gitlabAccessToken }}').revoke!"
+  ignore_errors: yes
+  args:
+    warn:
+      true
+  async: 45
+  poll: 9
+
+...
