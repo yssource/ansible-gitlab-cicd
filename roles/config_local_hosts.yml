@@ -9,6 +9,6 @@
     - { ip: 10.13.3.5, fqdn: usctvltstgitlbci01v.curbstone.com, name: usctvltstgitlbci01v }
     - { ip: 10.13.3.6, fqdn: usctvltstgitlbrn01.curbstone.com, name: usctvltstgitlbrn01 }
     - { ip: 10.13.3.7, fqdn: usctvltstgitlbrn02.curbstone.com, name: usctvltstgitlbrn02 }
-  when:  ansible_hostname is search('usctvltstgtlb')
+  when:  ansible_hostname is search('usctvltstgitlb')
 
 ...
