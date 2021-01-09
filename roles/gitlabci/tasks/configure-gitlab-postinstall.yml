@@ -19,7 +19,10 @@
 
 - name: Disable WebUI SignIn
   shell: |
-    curl -v --request PUT --header "PRIVATE-TOKEN: {{ gitlabAccessToken }}" \
+    curl -k -v --cacert /etc/gitlab/ssl/ca.crt \
+      --cert /etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.crt \
+      --key /etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.key \
+      --request PUT --header "PRIVATE-TOKEN: {{ gitlabAccessToken }}" \
       "{{ gitlabciUrl }}/api/v4/application/settings?signup_enabled=false&default_project_visibility=internal"
   ignore_errors: true
   args:
