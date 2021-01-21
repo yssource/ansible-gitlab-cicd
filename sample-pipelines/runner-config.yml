@@ -1,0 +1,108 @@
+- hosts: all
+  become: true
+  pre_tasks:
+    - name: Update apt cache
+      apt: update_cache=true
+
+  vars:
+    localBin: /usr/local/bin
+
+  tasks:
+
+    - name: Install common packages for Ubuntu
+      apt:
+        pkg:
+          - curl
+          - wget
+          - gnupg
+          - gnupg-agent
+          - ca-certificates
+          - apt-transport-https
+          - software-properties-common
+        state: present
+        update_cache: yes
+        dpkg_options: force-confdef,force-confold
+
+    - name: Add Goodle GPG key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+
+    - name: Add Google Package Repo
+      apt_repository:
+        repo: deb https://packages.cloud.google.com/apt cloud-sdk main
+        state: present
+        update_cache: yes
+
+
+    - name: Install gcloud-sdk and kubectl Packages
+      apt:
+        pkg:
+          - google-cloud-sdk
+          - kubectl
+        state: present
+        update_cache: yes
+        dpkg_options: force-confdef,force-confold
+
+    - name: Download werf
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.dest }}"
+        mode: " {{ item.mode }}"
+      with_items:
+        - { url: 'https://raw.githubusercontent.com/werf/multiwerf/master/get.sh', dest: '{{ localBin }}/get_werf.sh', mode: '0755' }
+      tags: ['installInfraCodePackages']
+
+    - name: Install werf
+      shell: |
+        "{{ localBin }}/get_werf.sh"
+      ignore_errors: true
+      args:
+        warn: true
+        chdir: "{{ localBin }}"
+
+    - name: Add gitlab-runner user to sudo group
+      user:
+        name: gitlab-runner
+        groups: docker
+
+    #
+    # ToDo:
+    #   Create user groups
+    #
+    # - name: Add gitlab-runner user to sudo group
+    #   user:
+    #     name: gitlab-runner
+    #     group: google-sudoers
+    #     groups: docker
+
+
+    - name: Install helm plugins
+      shell: |
+        helm plugin install {{ item }}
+      ignore_errors: true
+      args:
+        warn: true
+      with_items:
+        - 'https://github.com/databus23/helm-diff'
+        - 'https://github.com/zendesk/helm-secrets'
+
+    # - name: Initialize kubectl
+    #   become_user: gitlab-runner
+    #   shell: |
+    #     gcloud container clusters get-credentials atomyze-acn --region europe-west4 --project atomyze-acn
+    #     kubectl config rename-context gke_atomyze-acn_europe-west4_atomyze-acn atomyze-acn
+
+    - name: Install helmfile
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.dest }}"
+        mode: " {{ item.mode }}"
+      with_items:
+        - { url: 'https://github.com/roboll/helmfile/releases/download/v0.128.0/helmfile_linux_amd64', dest: '{{ localBin }}/helmfile', mode: '0755' }
+      tags: ['installHelmfile']
+
+
+  #roles:
+  #  - riemers.gitlab-runner
+  #   - geerlingguy.docker

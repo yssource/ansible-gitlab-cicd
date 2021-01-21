@@ -5,7 +5,6 @@
     gitlabciUrl: "http://{{ ansible_fqdn }}:80"
     # gitlabAccessToken: 'kY8-vieiC4p4ky_TBcnw'
 
-
   tasks:
 
      - set_fact:

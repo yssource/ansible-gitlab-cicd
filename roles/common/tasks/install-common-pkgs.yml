@@ -19,20 +19,30 @@
           - gzip
           - curl
           - unzip
-          - sysstat
-          - iptraf
           - rsyslog
           - postfix
           - logrotate
+          - sysstat
+          - iptraf
+          - gnupg
+          - gnupg-agent
           - openssh-server
+          - ca-certificates
+          - apt-transport-https
+          - software-properties-common
         state: present
         update_cache: yes
         dpkg_options: force-confdef,force-confold
 
-    - name:
-      apt:
-        name:
-          - apt-transport-https
+    - name: Add Goodle GPG key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+
+    - name: Add Google Package Repo
+      apt_repository:
+        repo: deb https://packages.cloud.google.com/apt cloud-sdk main
+        state: present
         update_cache: yes
 
     - name: Add Helm GPG Key
@@ -56,6 +66,7 @@
 
 - name: Install Common Debian Gitlab-CI Packages
   block:
+
     - name: Install common RedHat packages
       yum:
         pkg:
