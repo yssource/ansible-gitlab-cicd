@@ -57,10 +57,19 @@
     - name: Install docker
       apt:
         pkg:
-          - docker-ce
-          - docker-ce-cli
+          - docker-ce={{ docker.version }}
+          - docker-ce-cli={{ docker.version }}
           - containerd.io
         update_cache: yes
         dpkg_options: force-confdef,force-confold
+
+    - name: Install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/{{ docker.compose }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
+        dest: "{{ localBin}}/docker-compose"
+        group: root
+        owner: root
+        mode: 0755
+
   when: ansible_os_family == 'Debian'
 ...

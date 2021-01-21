@@ -13,4 +13,7 @@
 
 - import_tasks: setup-gitlab-runner.yml
   tags: ['installRunnerPackages']
+
+- import_tasks: install-additional-pkgs.yml
+  tags: ['additionalRunnerPkgs']
 ...

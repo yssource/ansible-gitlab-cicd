@@ -1,4 +1,4 @@
 ---
 docker:
-  version: 19.03.13
-  compose: 1.27.4
+  version: '5:20.10.2~3-0~ubuntu-bionic'
+  compose: 1.28.0

@@ -1,0 +1,65 @@
+---
+#
+# ansible-playbook  --private-key ~/.ssh/id_rsa -u <ssh_username>  -i <ansible_hostname|ip_address>, \
+#    -e 'ansible_python_interpreter=/usr/bin/python3' -b --become-method sudo -D ansible-fi-onboarding-portal.yml
+#
+- hosts: localhost
+  gather_facts: true
+  tags: always
+
+  vars:
+
+  handlers:
+    - name: service restart google-fluentd
+      service:
+        name: google-fluentd
+        state: restarted
+
+  tasks:
+
+    - name: Install Required Packages for tradingPortal
+      apt:
+        pkg:
+          - npm
+          - nginx
+          - nodejs
+          - mongodb
+        state: present
+        update_cache: yes
+        dpkg_options: force-confdef,force-confold
+
+    - name: service | {{ item }}
+      service:
+        name: "{{ item }}"
+        enabled: true
+        state: restarted
+      with_items:
+        - [ 'google-fluentd' ]
+
+
+    - name: Download GCP cloudLogging agent Repo
+      get_url:
+        url: https://dl.google.com/cloudagents/add-logging-agent-repo.sh
+        dest: /tmp/add-logging-agent-repo.sh
+        mode: 0755
+
+    - name: Configure GCP cloudLogging agent Repo
+      shell: |
+        /tmp/add-logging-agent-repo.sh
+      ignore_errors: true
+      args:
+        warn: true
+
+    - name: Install GCP cloudLogging agent Repo
+      apt:
+        pkg:
+          - google-fluentd
+          - google-fluentd-catch-all-config
+        state: present
+        update_cache: yes
+
+      notify: "{{ item }}"
+      with_items:
+        - service restart mongodb
+        - service restart nginx
+        - service restart google-fluentd

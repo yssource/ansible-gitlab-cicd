@@ -17,14 +17,14 @@
       yum:
         name:
           - containerd.io
-          - "docker-ce-{{docker.version}}"
-          - "docker-ce-cli-{{docker.version}}"
+          - "docker-ce-{{dockerRHEL.version}}"
+          - "docker-ce-cli-{{dockerRHEL.version}}"
         enablerepo: docker-ce-stable
         state: present
 
     - name: Get Docker Compose
       get_url:
-        url: https://github.com/docker/compose/releases/download/{{ docker.compose }}/docker-compose-Linux-x86_64
+        url: https://github.com/docker/compose/releases/download/{{ docker.compose }}/{{ ansible_system }}-{{ ansible_architecture }}
         dest: "{{ localBin }}/docker-compose"
         mode: 0755
 

@@ -116,5 +116,5 @@
   environment:
     EXTERNAL_URL: "{{ gitlabciUrl }}"
     GITLAB_ROOT_PASSWORD: "{{ initial_root_password }}"
-  tags: ['configGitlabCe']
+  tags: ['configGitlabEE']
 ...

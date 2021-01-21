@@ -3,10 +3,14 @@
   # Import tasks
   #
 - import_tasks: "{{ role_path }}/../config_local_hosts.yml"
-  tags: ['configLocalHost', 'configEtcHosts']
+  tags: ['configLocalHost']
 
 - import_tasks: "{{ role_path }}/../assert-env.yml"
   tags: ['assertEnv']
 
 - import_tasks: install-common-pkgs.yml
   tags: ['installCommonPkgs']
+
+- import_tasks: install-cloud-logging.yml
+  when: env is search('prd')
+  tags: ['installCloudLogging']

@@ -1,0 +1,31 @@
+---
+- name: Download GCP cloudLogging agent Repo
+  get_url:
+    url: https://dl.google.com/cloudagents/add-logging-agent-repo.sh
+    dest: /tmp/add-logging-agent-repo.sh
+    mode: 0755
+
+- name: Configure GCP cloudLogging agent Repo
+  shell: |
+    /tmp/add-logging-agent-repo.sh
+  ignore_errors: true
+  args:
+    warn: true
+
+- name: Install GCP cloudLogging agent Repo
+  apt:
+    pkg:
+      - google-fluentd
+      - google-fluentd-catch-all-config
+    state: present
+    update_cache: yes
+
+- name: service | {{ item }}
+  service:
+    name: google-fluentd
+    enabled: true
+    state: restarted
+
+  notify: "{{ item }}"
+  with_items:
+    - service restart google-fluentd
