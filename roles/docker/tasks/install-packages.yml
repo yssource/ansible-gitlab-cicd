@@ -33,6 +33,7 @@
     - name: Install common Docker for Ubuntu
       apt:
         pkg:
+          - curl
           - gnupg-agent
           - ca-certificates
           - apt-transport-https
@@ -49,7 +50,7 @@
 
     - name: Add Docker Repo
       apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+        repo: "deb https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable"
         state: present
         update_cache: yes
 

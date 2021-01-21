@@ -86,10 +86,19 @@
   with_items:
       - { dst: /etc/gitlab, mode: '0775' }
       - { dst: /etc/gitlab/ssl, mode: '0755' }
-#
-# TODO:
-#   Add task for configuring TLS
-#
+- name: Copy GitLab SSL Certs
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: root
+    group: root
+    mode: 0400
+  no_log: true
+  with_items:
+    - { src: vault/ca.crt, dst: /etc/gitlab/ssl/ca.crt }
+    - { src: vault/server.crt, dst: "/etc/gitlab/ssl/{{ ansible_fqdn }}.crt" }
+    - { src: vault/server.key, dst: '/etc/gitlab/ssl/{{ ansible_fqdn }}.key' }
+  when: ansible_fqdn is search('symtstgtlbcivm001')
 
 - name: Render gitlab-ee template
   template:

@@ -79,3 +79,7 @@ curl -v --cacert /etc/gitlab/ssl/ca.crt --cert /etc/gitlab/ssl/usctvltstgitlbci0
        * [new branch]      master -> master
       Branch master set up to track remote branch master from http://localhost:8080/lgarvey/ansible-devops-tools.git.
       lindsworthgarvey@marcusAlexandra ansible-devops-tools %
+
+Push the Tags
+
+      lindsworthgarvey@marcusAlexandra ansible-devops-tools % git push   git push --tags

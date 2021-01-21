@@ -18,14 +18,33 @@
     - { dst: /etc/gitlab-runner, mode: '0755' }
     - { dst: /etc/gitlab-runner/certs, mode: '0755' }
 
+#===============================================================================
 #
 # TODO
 #   Configure TLS for runner
 #
+#===============================================================================
+
+- name: Copy GitLab-Runner SSL Certs
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: 0400
+  no_log: true
+  with_items:
+    - { src: vault/ca.crt, dst: /etc/gitlab-runner/certs/ca.crt, owner: 'gitlab-runner', group: 'gitlab-runner' }
+    - { src: vault/server.crt, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt', owner: 'gitlab-runner', group: 'gitlab-runner' }
+    - { src: vault/server.key, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key', owner: 'gitlab-runner', group: 'gitlab-runner' }
+  when: ansible_fqdn is search('symtstgtlb')
 
 - name: Register gitlab-runner
   shell: |
      gitlab-runner register \
+         --tls-ca-file /etc/gitlab-runner/certs/ca.crt \
+         --tls-cert-file "/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt" \
+         --tls-key-file "/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key" \
          --tag-list shell  \
          -n -r "{{ registration_token }}"  \
          --url "{{ gitlabciUrl }}" \
@@ -37,6 +56,26 @@
   args:
     warn: false
   register: registerGitLabRunner
+
+#
+#===============================================================================
+#===============================================================================
+# - name: Register gitlab-runner
+#   shell: |
+#      gitlab-runner register \
+#          --tag-list shell  \
+#          -n -r "{{ registration_token }}"  \
+#          --url "{{ gitlabciUrl }}" \
+#          --run-untagged=true  \
+#          --locked=false  \
+#          --name="{{ ansible_fqdn }}" \
+#          --executor=shell
+#   ignore_errors: false
+#   args:
+#     warn: false
+#   register: registerGitLabRunner
+#===============================================================================
+#===============================================================================
 
 - name: Set prepare .gitConfig
   shell: |

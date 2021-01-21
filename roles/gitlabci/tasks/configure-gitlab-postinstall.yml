@@ -14,12 +14,15 @@
   args:
     warn:
       true
-  async: 45
-  poll: 9
+  async: 120
+  poll: 12
 
 - name: Disable WebUI SignIn
   shell: |
-    curl -v --request PUT --header "PRIVATE-TOKEN: {{ gitlabAccessToken }}" \
+    curl -k -v --cacert /etc/gitlab/ssl/ca.crt \
+      --cert /etc/gitlab/ssl/{{ ansible_fqdn }}.crt \
+      --key /etc/gitlab/ssl/{{ ansible_fqdn }}.key \
+      --request PUT --header "PRIVATE-TOKEN: {{ gitlabAccessToken }}" \
       "{{ gitlabciUrl }}/api/v4/application/settings?signup_enabled=false&default_project_visibility=internal"
   ignore_errors: true
   args:
@@ -38,18 +41,18 @@
     status_code: [201, 200]
     return_content: yes
   with_items:
-    - { "name": "IT-DevOps", "path": "DevOps", "description": "DevOps Repository Group" }
-    - { "name": "IT-Security", "path": "SecOps", "description": "IT Security Repository Group" }
-    - { "name": "IT-Engineering", "path": "AppEng", "description": "Application Engineering Repository Group" }
+    - { "name": "DevOps", "path": "DevOps", "description": "DevOps Repository Group" }
+    - { "name": "Security", "path": "SecOps", "description": "IT Security Repository Group" }
+    - { "name": "Engineering", "path": "AppEng", "description": "Application Engineering Repository Group" }
 
-- name: Create Personal Access Token
+- name: Revoke Personal Access Token
   shell: |
     gitlab-rails runner "PersonalAccessToken.find_by_token('{{ gitlabAccessToken }}').revoke!"
   ignore_errors: yes
   args:
     warn:
       true
-  async: 45
-  poll: 9
+  async: 120
+  poll: 12
 
 ...

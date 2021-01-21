@@ -1,6 +1,12 @@
 # ansible-gitlab-cicd
 --------------------------------------
 
+# Enable GitLab SSO - Integrate GitLab with AzureAD
+[ Microsoft Azure OAuth2 OmniAuth Provider](https://docs.gitlab.com/ee/integration/azure.html)
+
+
+ansible-playbook --private-key ~/.ssh/id_rsa -u lgarvey  -i inventory/hosts -l gitlab-ci -b --become-method sudo --vault-password-file .symtstGTLBCIvault -D gitlabci.yml
+
 Setting initial root password on installation
 ===============================================
 
@@ -219,8 +225,7 @@ Using the API to Delete GitLab-Runners
 curl --request DELETE --header "PRIVATE-TOKEN: vu1zFo5okhrn69uBLApq" "http://10.13.3.5/api/v4/runners/3"
 ```
 
-Manually configuring HTTPS
-=================================
+## Manually configuring HTTPS
 
 To enable HTTPS for the domain {{ ansible_fqdn }}:
 
@@ -246,12 +251,20 @@ To enable HTTPS for the domain {{ ansible_fqdn }}:
           nginx['redirect_http_to_https_port'] = 80
 
          ```
-    4. Ensure that the https servie port is opened if running firewalld
+    4. Ensure that the https servie port is opened if running firewalld on RHEL based platforms.
 
              ```
              sudo firewall-cmd --permanent --add-service=https
              sudo systemctl reload firewalld
+            ```
+
+          On Debian based platforms, running host based firewalls ensure that iptables has been configured to allow HTTPS
+
              ```
+             iptables -A INPUT -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW,RELATED,ESTABLISHED -j ACCEPT
+
+             ```
+          
     5. Reconfigure GitLab:
           ```
           sudo gitlab-ctl reconfigure

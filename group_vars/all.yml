@@ -14,8 +14,8 @@ gitlabAccessToken: "{{ lookup('password', '/dev/null length=20')}}"
 initial_root_password: "{{ GitLab_Passwd if env is search('tst')
                           else Prd_GitLab_Passwd
                           }}"
-gitlabciUrl: "http://{{ 'symtstgtlbcivm001' if env is search('tst')
-              else 'symprdgtlbcivm001'
+gitlabciUrl: "https://{{ 'symtstgtlbcivm001.symbridge.com' if env is search('tst')
+              else 'symprdgtlbcivm001.symbridge.com'
            }}"
 
 registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if env is search('tst')

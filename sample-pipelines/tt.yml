@@ -2,30 +2,26 @@
 - hosts: localhost
 
   vars:
-    Prd_GitLab_Passwd: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          32363264653364376135366631376230343830633838373139393839633539656135353965306362
-          6565633436313738343266666539653130306663356238650a396662306430633637643063376434
-          38396335633263653835363262303137363736326661336263383630343236353437636161323633
-          6138366561373930320a633231346632373732346337313766663432383935373839646662373338
-          31346132633031393232316366333866376463373239383462613936326431383937
+          # #    Prd_GitLab_Passwd: !vault |
+          #$ANSIBLE_VAULT;1.1;AES256
+          #30343738393539346637633064303062323038633462613233393765343735373365643836646161
+          #6338623063623061643862336463393830623932613561330a363536633661613535623931636631
+          #33613965346438393939353733306639343031666630626232613431663136613538333237633762
+          #3836666334356634330a306433313235383039653433636233386363313535623434386635353964
+          #30643633376232353965636366323262376238366337363632303038663532303665
 
     gitlabAccessToken: "{{ lookup('password', '/dev/null length=20')}}"
 
-    #registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if ansible_hostname is search('symtstgtlbcivm001')
-    #          else '{{ gitlabAccessToken | quote }}'
-    #       }}"
     registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if ansible_hostname is search('symprdgtlbcivm001')
-                        else  gitlabAccessToken 
+                        else  gitlabAccessToken
                        }}"
 
   tasks:
 
-      - debug:
-          msg: "{{ Prd_GitLab_Passwd }}" 
+          #- debug: msg: "PrdGitLabPasswd is ==> {{ Prd_GitLab_Passwd }}"
 
       - debug:
           msg: "GitLabAccessToken is ==> {{ gitlabAccessToken }}"
-         
+
       - debug:
-              msg: "RegistrationToken ==> {{ registration_token }}" 
+              msg: "RegistrationToken ==> {{ registration_token }}"
