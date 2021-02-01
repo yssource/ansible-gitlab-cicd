@@ -41,22 +41,10 @@
     #     group: google-sudoers
     #     groups: docker
 
-    - name: Gather facts on installed Packages
-      package_facts:
-        manager: auto
-
-    - name: Check if helm package is installed
-      debug:
-        msg: "{{ ansible_facts.packages['helm']}}"
-      when: "'helm' in ansible_facts.packages"
-
-    - name: Install helm plugins
-      shell: |
-        helm plugin list
-      ignore_errors: true
-      args:
-        warn: true
-      when: "'helm' in ansible_facts.packages"
+    - name: Check if {{ localBin }}/helm Binary exists.
+      stat:
+        path: "{{ localBin }}/helm"
+      register: helmBinary
 
     - name: Install helm plugins
       shell: |
@@ -67,7 +55,7 @@
       with_items:
         - 'https://github.com/databus23/helm-diff'
         - 'https://github.com/zendesk/helm-secrets'
-      when: "'helm' in ansible_facts.packages"
+      when: helmBinary.stat.exists"
 
     # - name: Initialize kubectl
     #   become_user: gitlab-runner
