@@ -25,13 +25,13 @@ platforms:
       box: ansible-ubuntu-18.04.5-x86_64
       box_url: file:///Users/lindsworthgarvey/vagrantRepo/ansible-ubuntu-18.04.5-x86_64
       synced_folders:
-        - [ "~/symbridgeRepo/ansiblePlaybook", "/ansiblePlaybook"]
+        - [ "~/curbStoneOps/ansiblePlaybook", "/ansiblePlaybook"]
         - [ "~/Downloads/Software", "/instImages"]
 
 suites:
   - name: gitlab-ci
     driver:
-      vm_hostname: symtstgtlbcivm001.symbridge.com
+      vm_hostname: usctvltstgitlbci01v.curbstone.com
       customize:
         cpus: 2
         memory: 2048
@@ -42,14 +42,14 @@ suites:
         - ["forwarded_port", {guest: 443, host: 8443}]
         - ["forwarded_port", {guest: 9090, host: 9090}]
     provisioner:
-      hosts: symtstgtlbcivm001.symbridge.com"
+      hosts: usctvltstgitlbci01v.curbstone.com"
       require_ansible_repo: true
       playbook: gitlabci.yml
       ansible_vault_password_file: [".kitchenCIvault", ".symtstGTLBCIvault"]
 
   - name: gitlab-runner-01
     driver:
-      vm_hostname: symtstgtlbrnvm001.symbridge.com
+      vm_hostname: usctvltstgitlbrn01v.curbstone.com
       customize:
         cpus: 1
         memory: 1024
@@ -57,7 +57,7 @@ suites:
       network:
         - ["private_network", {ip: "10.13.3.6"}]
     provisioner:
-      hosts: symtstgtlbrnvm001.symbridge.com
+      hosts: usctvltstgitlbrn01v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabrunner.yml
       ansible_vault_password_file: [".kitchenCIvault", ".symtstGTLBCIvault" ]

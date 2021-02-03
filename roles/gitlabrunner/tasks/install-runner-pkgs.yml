@@ -57,6 +57,7 @@
       notify: "{{ item }}"
       with_items:
         - service restart firewalld
+        - service restart gitlab-runner
   when: ansible_os_family == 'RedHat'
 
 - name: Configure Debian Gitlab-CI Requirements
@@ -86,9 +87,31 @@
         pkg:
           - gitlab-runner={{ gitlabEE.runnerVersion }}
         update_cache: yes
+      register: installGitLabRunner
+
+    - name: Restart rsyslog
+      service:
+        name: gitlab-runner
+        enabled: true
+        state: started
+    #
+    # TODO:
+    #   Create user groups
+    #
+    # - name: Add gitlab-runner user to sudo group
+    #   user:
+    #     name: gitlab-runner
+    #     group: google-sudoers
+    #     groups: docker
+
+    - name: Add gitlab-runner user to Docker group
+      user:
+        name: gitlab-runner
+        groups: docker
 
       notify: "{{ item }}"
       with_items:
         - service restart ufw
+        - service restart gitlab-runner
 
   when: ansible_os_family == 'Debian'

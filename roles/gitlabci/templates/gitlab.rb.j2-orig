@@ -531,7 +531,7 @@ gitlab_rails['member_invitation_reminder_emails_worker_cron'] = "0 0 * * *"
 ###! Docs: https://docs.gitlab.com/omnibus/settings/backups.html
 
 # gitlab_rails['manage_backup_path'] = true
-# gitlab_rails['backup_path'] = "/var/opt/gitlab/backups"
+ gitlab_rails['backup_path'] = "{{ gitlabCI.backup_path}}"
 
 ###! Docs: https://docs.gitlab.com/ee/raketasks/backup_restore.html#backup-archive-permissions
 # gitlab_rails['backup_archive_permissions'] = 0644

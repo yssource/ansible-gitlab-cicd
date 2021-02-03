@@ -11,7 +11,7 @@
     - "443/tcp"
     - "9090/tcp"
     - "6379/tcp"
-  when: ansible_hostname is search('symtstgtlbcivm001') and ansible_os_family == 'RedHat'
+  when: ansible_hostname is search('usctvltstgitlbcivm001') and ansible_os_family == 'RedHat'
   tags: firewalld
 
 - name: Allow New,Related and Established connections to GitLab
@@ -28,4 +28,4 @@
     - "443"
     - "9090"
     - "6379"
-  when: ansible_hostname is search('symtstgtlbcivm001') and ansible_os_family == 'Debian'
+  when: ansible_hostname is search('usctvltstgitlbcivm001') and ansible_os_family == 'Debian'

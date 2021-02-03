@@ -37,7 +37,7 @@
     - { src: vault/ca.crt, dst: /etc/gitlab-runner/certs/ca.crt, owner: 'gitlab-runner', group: 'gitlab-runner' }
     - { src: vault/server.crt, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt', owner: 'gitlab-runner', group: 'gitlab-runner' }
     - { src: vault/server.key, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key', owner: 'gitlab-runner', group: 'gitlab-runner' }
-  when: ansible_fqdn is search('symtstgtlb')
+  when: ansible_fqdn is search('usctvltstgitlb')
 
 - name: Register gitlab-runner
   shell: |
@@ -105,9 +105,9 @@
     mode: 0700
   no_log: true
   with_items:
-    - { src: kitchenCIgitlabrunner/symtstgtlb-id_rsa, dst: /home/gitlab-runner/.ssh/id_rsa }
-    - { src: kitchenCIgitlabrunner/symtstgtlb-id_rsa.pub, dst: /home/gitlab-runner/.ssh/id_rsa.pub }
-  when: ansible_fqdn is search('symtstgtlb')
+    - { src: kitchenCIgitlabrunner/usctvltstgitlb-id_rsa, dst: /home/gitlab-runner/.ssh/id_rsa }
+    - { src: kitchenCIgitlabrunner/usctvltstgitlb-id_rsa.pub, dst: /home/gitlab-runner/.ssh/id_rsa.pub }
+  when: ansible_fqdn is search('usctvltstgitlb')
 
 - name: Configure gitlab-runner Authorized Keys
   authorized_key:
@@ -118,8 +118,8 @@
     manage_dir: True
   no_log: true
   with_file:
-    - kitchenCIgitlabrunner/symtstgtlb-id_rsa.pub
-  when: ansible_fqdn is search('symtstgtlb')
+    - kitchenCIgitlabrunner/usctvltstgitlb-id_rsa.pub
+  when: ansible_fqdn is search('usctvltstgitlb')
 
 - name: Render gitlab-runner ssh_config
   template:

@@ -1,4 +1,5 @@
 ---
+usrBin: '/usr/bin'
 localBin: /usr/local/bin
 stagingDir: "/tmp/instImages"
 tmpDir: /tmp
@@ -7,17 +8,19 @@ gitlabData: "/apps/git-data"
 gitlabEE:
   ciVersion: '13.7.1-ee.0'
   runnerVersion: '13.7.0'
-helmVer:  "v3.3.4"
+helmVersion:  "3.5.1-1"
 
 gitlabAccessToken: "{{ lookup('password', '/dev/null length=20')}}"
 
 initial_root_password: "{{ GitLab_Passwd if env is search('tst')
                           else Prd_GitLab_Passwd
                           }}"
-gitlabciUrl: "https://{{ 'symtstgtlbcivm001.symbridge.com' if env is search('tst')
-              else 'symprdgtlbcivm001.symbridge.com'
+gitlabciUrl: "{{ 'https://usctvltstgitlbci01v.curbstone.com' if env is search('tst')
+              else 'https://usctvlprdgitlbci01v.curbstone.com'
            }}"
 
 registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if env is search('tst')
                         else  gitlabAccessToken
                        }}"
+gitlabCI:
+  - backup_path: '/var/opt/gitlab/backups'

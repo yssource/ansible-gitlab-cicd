@@ -31,7 +31,7 @@ platforms:
 suites:
   - name: gitlab-ci
     driver:
-      vm_hostname: symtstgtlbcivm001.symbridge.com
+      vm_hostname: usctvltstgitlbci01v.curbstone.com
       customize:
         cpus: 2
         memory: 2048
@@ -42,14 +42,14 @@ suites:
         - ["forwarded_port", {guest: 443, host: 8443}]
         - ["forwarded_port", {guest: 9090, host: 9090}]
     provisioner:
-      hosts: symtstgtlbcivm001.symbridge.com
+      hosts: usctvltstgitlbci01v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabci.yml
       ansible_vault_password_file: [".kitchenCIvault", ".symtstGTLBCIvault"]
 
   - name: gitlab-runner-01
     driver:
-      vm_hostname: symtstgtlbrnvm001.symbridge.com
+      vm_hostname: usctvltstgitlbrn01v.curbstone.com
       customize:
         cpus: 1
         memory: 1024
@@ -57,14 +57,14 @@ suites:
       network:
         - ["private_network", {ip: "10.13.3.6"}]
     provisioner:
-      hosts: symtstgtlbrnvm001.symbridge.com
+      hosts: usctvltstgitlbrn01v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabrunner.yml
       ansible_vault_password_file: [".kitchenCIvault", ".symtstGTLBCIvault" ]
 
   - name: gitlab-runner-02
     driver:
-      vm_hostname: symtstgtlbrnvm002.symbridge.com
+      vm_hostname: usctvltstgitlbrn02v.curbstone.com
       customize:
         cpus: 1
         memory: 1024
@@ -72,7 +72,7 @@ suites:
       network:
         - ["private_network", {ip: "10.13.3.7"}]
     provisioner:
-      hosts: symtstgtlbrnv002.symbridge.com
+      hosts: usctvltstgitlbrn02v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabrunner.yml
       ansible_vault_password_file: [".kitchenCIvault", ".symtstGTLBCIvault"]

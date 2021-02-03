@@ -36,8 +36,6 @@ $ kitchen create ==> kitchen converge ==> kitchen verify ==> kitchen destroy
 $
 ```
 
-
-
 # Enable GitLab SSO - Integrate GitLab with AzureAD
 [ Microsoft Azure OAuth2 OmniAuth Provider](https://docs.gitlab.com/ee/integration/azure.html)
 
@@ -301,7 +299,7 @@ To enable HTTPS for the domain {{ ansible_fqdn }}:
              iptables -A INPUT -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW,RELATED,ESTABLISHED -j ACCEPT
 
              ```
-          
+
     5. Reconfigure GitLab:
           ```
           sudo gitlab-ctl reconfigure

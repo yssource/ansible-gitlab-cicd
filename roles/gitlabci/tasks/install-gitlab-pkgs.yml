@@ -47,7 +47,7 @@
           - "{{ stagingDir }}/gitlab-runner_amd64.rpm"
         state: present
         enablerepo: gitlab_gitlab-ee
-      when: "ansible_fqdn is search('symtstgtlbcivm001') and not gitlab_ctl.stat.exists"
+      when: "ansible_fqdn is search('usctvltstgitlbci01v') and not gitlab_ctl.stat.exists"
 
   when: ansible_os_family == 'RedHat'
 
@@ -98,7 +98,7 @@
     - { src: vault/ca.crt, dst: /etc/gitlab/ssl/ca.crt }
     - { src: vault/server.crt, dst: "/etc/gitlab/ssl/{{ ansible_fqdn }}.crt" }
     - { src: vault/server.key, dst: '/etc/gitlab/ssl/{{ ansible_fqdn }}.key' }
-  when: ansible_fqdn is search('symtstgtlbcivm001')
+  when: ansible_fqdn is search('usctvltstgitlbci01v')
 
 - name: Render gitlab-ee template
   template:
