@@ -34,10 +34,9 @@
     mode: 0400
   no_log: true
   with_items:
-    - { src: vault/ca.crt, dst: /etc/gitlab-runner/certs/ca.crt, owner: 'gitlab-runner', group: 'gitlab-runner' }
-    - { src: vault/server.crt, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt', owner: 'gitlab-runner', group: 'gitlab-runner' }
-    - { src: vault/server.key, dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key', owner: 'gitlab-runner', group: 'gitlab-runner' }
-  when: ansible_fqdn is search('usctvltstgitlb')
+    - { src: 'vault/{{ env }}/ca.crt', dst: /etc/gitlab-runner/certs/ca.crt, owner: 'gitlab-runner', group: 'gitlab-runner' }
+    - { src: 'vault/{{ env }}/server.crt', dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt', owner: 'gitlab-runner', group: 'gitlab-runner' }
+    - { src: 'vault/{{ env }}/server.key', dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key', owner: 'gitlab-runner', group: 'gitlab-runner' }
 
 - name: Register gitlab-runner
   shell: |
@@ -45,37 +44,19 @@
          --tls-ca-file /etc/gitlab-runner/certs/ca.crt \
          --tls-cert-file "/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt" \
          --tls-key-file "/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key" \
-         --tag-list shell  \
+         --tag-list "{{ item.tag }}"  \
          -n -r "{{ registration_token }}"  \
          --url "{{ gitlabciUrl }}" \
          --run-untagged=true  \
          --locked=false  \
          --name="{{ ansible_fqdn }}" \
-         --executor=shell
+         --executor=""{{ item.executor }}""
   ignore_errors: false
   args:
     warn: false
+  with_items:
+    - { name: ansible_fqdn, tag: 'shell', executor: 'shell' }
   register: registerGitLabRunner
-
-#
-#===============================================================================
-#===============================================================================
-# - name: Register gitlab-runner
-#   shell: |
-#      gitlab-runner register \
-#          --tag-list shell  \
-#          -n -r "{{ registration_token }}"  \
-#          --url "{{ gitlabciUrl }}" \
-#          --run-untagged=true  \
-#          --locked=false  \
-#          --name="{{ ansible_fqdn }}" \
-#          --executor=shell
-#   ignore_errors: false
-#   args:
-#     warn: false
-#   register: registerGitLabRunner
-#===============================================================================
-#===============================================================================
 
 - name: Set prepare .gitConfig
   shell: |

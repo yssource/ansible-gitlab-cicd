@@ -22,5 +22,7 @@ gitlabciUrl: "{{ 'https://usctvltstgitlbci01v.curbstone.com' if env is search('t
 registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if env is search('tst')
                         else  gitlabAccessToken
                        }}"
-gitlabCI:
-  - backup_path: '/var/opt/gitlab/backups'
+gitlabRegistry:
+  backup_path: '/var/opt/gitlab/backups'
+  Url: "{{ gitlabciUrl }}"
+  UrlPort: '5050'

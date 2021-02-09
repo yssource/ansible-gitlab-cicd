@@ -95,10 +95,9 @@
     mode: 0400
   no_log: true
   with_items:
-    - { src: vault/ca.crt, dst: /etc/gitlab/ssl/ca.crt }
-    - { src: vault/server.crt, dst: "/etc/gitlab/ssl/{{ ansible_fqdn }}.crt" }
-    - { src: vault/server.key, dst: '/etc/gitlab/ssl/{{ ansible_fqdn }}.key' }
-  when: ansible_fqdn is search('usctvltstgitlbci01v')
+    - { src: 'vault/{{ env }}/ca.crt', dst: /etc/gitlab/ssl/ca.crt }
+    - { src: 'vault/{{ env }}/server.crt', dst: '/etc/gitlab/ssl/{{ ansible_fqdn }}.crt' }
+    - { src: 'vault/{{ env }}/server.key', dst: '/etc/gitlab/ssl/{{ ansible_fqdn }}.key' }
 
 - name: Render gitlab-ee template
   template:
@@ -116,5 +115,23 @@
   environment:
     EXTERNAL_URL: "{{ gitlabciUrl }}"
     GITLAB_ROOT_PASSWORD: "{{ initial_root_password }}"
+  register: gitLabCTL_reconfigure
   tags: ['configGitlabEE']
+
+- debug:
+    msg:
+      - "Starting the gitlab-ctl reconfiguration process: "
+      - "{{ gitLabCTL_reconfigure.stdout_lines }}"
+
+- name: Wait for GitLab to start up
+  wait_for:
+    port: 443
+    delay: 10
+    sleep: 5
+
+- name: Check if Gitlab is running
+  uri:
+    url: "{{ gitlabciUrl }}"
+    validate_certs: false
+
 ...

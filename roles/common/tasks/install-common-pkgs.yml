@@ -19,6 +19,7 @@
           - gzip
           - curl
           - unzip
+          - rsync
           - rsyslog
           - postfix
           - logrotate
@@ -34,7 +35,7 @@
         update_cache: yes
         dpkg_options: force-confdef,force-confold
 
-    - name: Add Goodle GPG key
+    - name: Add Google GPG key
       apt_key:
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
         state: present
@@ -56,10 +57,10 @@
         state: present
         update_cache: yes
 
-    - name:
+    - name: Install Helm
       apt:
         name:
-          - helm
+          - helm={{ helmVersion }}
         update_cache: yes
   when: ansible_os_family == 'Debian'
 
