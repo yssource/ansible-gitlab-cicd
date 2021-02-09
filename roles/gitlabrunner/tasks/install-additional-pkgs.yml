@@ -42,7 +42,7 @@
         state: present
         update_cache: yes
 
-    - name:
+    - name: Install Helm
       apt:
         name:
           - helm={{ helmVersion }}

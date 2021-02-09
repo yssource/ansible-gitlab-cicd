@@ -7,7 +7,10 @@
   when: ansible_hostname is search('usctvl(tst|dev|uat|prd)')
 
 - debug:
-    msg: "Host environment is : {{ env }} HostName is {{ local_env }}"
+    msg: "Host environment is : {{ env[0:3] }} HostName is {{ local_env }}"
+
+- set_fact:
+    env: "{{ env[0:3] }}"
 
 - assert:
     that:

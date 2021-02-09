@@ -6,28 +6,34 @@
       smtp_server: smtp.curbstone.com
       smtp_port: 25
 
+    gitlabciUrl: "{{ 'https://usctvltstgitlbci01v.curbstone.com' if env is search('tst')
+                    else 'https://usctvlprdgitlbci01v.curbstone.com'
+                    }}"
+
+    registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if env is search('tst')
+                        else  gitlabAccessToken
+                       }}"
+    gitlabRegistry:
+      backup_path: '/var/opt/gitlab/backups'
+      Url: "{{ gitlabciUrl }}"
+      UrlPort: '5050'
+
+
   tasks:
 
-    - name:
-      apt:
-        name:
-          - apt-transport-https
-        update_cache: yes
+    - name: set_fact for localhost
+      tags: always
+      set_fact:
+        env: "{{ ansible_hostname.split('usctvl')[1] }}"
+        local_env: "{{ ansible_hostname.split('usctvl(tst|dev|uat|prd)') }}"
+      when: ansible_hostname is search('usctvl(tst|dev|uat|prd)')
 
+    - debug:
+        msg: "Host environment is : {{ env }} HostName is {{ local_env }}"
 
-    - name: Add Helm GPG Key
-      apt_key:
-        url:  https://baltocdn.com/helm/signing.asc
-        state: present
+    - assert:
+        that:
+          - env is search('tst|dev|uat|prd')
 
-    - name: Add Helm Repository
-      apt_repository:
-        repo: deb https://baltocdn.com/helm/stable/debian/ all main
-        state: present
-        update_cache: yes
-
-    - name:
-      apt:
-        name:
-          - helm
-        update_cache: yes
+    - debug:
+        msg: "{{ gitlabRegistry.Url }} ==> {{ gitlabRegistry.UrlPort }}"
