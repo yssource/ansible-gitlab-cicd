@@ -64,7 +64,7 @@ suites:
 
   - name: gitlab-runner-02
     driver:
-      vm_hostname: usctvltstgitlbrn02v.symbridge.com
+      vm_hostname: usctvltstgitlbrn02v.curbstone.com
       customize:
         cpus: 1
         memory: 1024

@@ -704,7 +704,7 @@ gitlab_rails['initial_shared_runners_registration_token'] = "{{ registration_tok
 
 ### Settings used by GitLab application
  gitlab_rails['registry_enabled'] = true
- gitlab_rails['registry_host'] = "{{ ansible_fqdn }}"
+ gitlab_rails['registry_host'] = "{{ gitlabRegistry.host }}"
  gitlab_rails['registry_path'] = "/var/opt/gitlab/gitlab-rails/shared/registry"
 
 # Notification secret, it's used to authenticate notification requests to GitLab application

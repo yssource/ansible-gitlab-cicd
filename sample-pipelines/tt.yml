@@ -2,26 +2,41 @@
 - hosts: localhost
 
   vars:
-          # #    Prd_GitLab_Passwd: !vault |
-          #$ANSIBLE_VAULT;1.1;AES256
-          #30343738393539346637633064303062323038633462613233393765343735373365643836646161
-          #6338623063623061643862336463393830623932613561330a363536633661613535623931636631
-          #33613965346438393939353733306639343031666630626232613431663136613538333237633762
-          #3836666334356634330a306433313235383039653433636233386363313535623434386635353964
-          #30643633376232353965636366323262376238366337363632303038663532303665
+    gitlabRegistry:
+      host: usctvltstgitlbci01v.curbstone.com
 
-    gitlabAccessToken: "{{ lookup('password', '/dev/null length=20')}}"
-
-    registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if ansible_hostname is search('symprdgtlbcivm001')
-                        else  gitlabAccessToken
-                       }}"
 
   tasks:
 
-          #- debug: msg: "PrdGitLabPasswd is ==> {{ Prd_GitLab_Passwd }}"
+    #- name: Ensure ssh host key known
+    #  delegate_to: localhost
+    #  lineinfile:
+    #    dest: ~/.ssh/known_hosts
+    #    create: yes
+    #    state: present
+    #    line: "{{ lookup('pipe', 'ssh-keyscan -trsa -p' + ansible_ssh_port + ' ' + ansible_ssh_host) }}"
 
-      - debug:
-          msg: "GitLabAccessToken is ==> {{ gitlabAccessToken }}"
+          
+    - name: Configure GitLabCI Host Keys
+      block:
+        - name: Are GitLabCI ssh-keys Known to runner {{ ansible_fqdn }}
+          shell:
+            ssh-keygen -F {{ gitlabRegistry.host }} -f ~/.ssh/known_hosts
+          ignore_errors: true
+          args: 
+            warn: true
+          register: gitLabCIssh_hostKey
 
-      - debug:
-              msg: "RegistrationToken ==> {{ registration_token }}"
+        - debug:
+            msg: "{{ gitLabCIssh_hostKey }}"
+
+        - name: Add GitLabCI ssh-host key
+          shell:
+            ssh-keyscan {{ gitlabRegistry.host }} >> ~/.ssh/known_hosts
+          when: not gitLabCIssh_hostKey.stdout 
+      become: yes
+      become_method: sudo
+      become_user: gitlab-runner
+
+...
+

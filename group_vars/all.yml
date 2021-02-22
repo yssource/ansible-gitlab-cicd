@@ -3,12 +3,14 @@ usrBin: '/usr/bin'
 localBin: /usr/local/bin
 stagingDir: "/tmp/instImages"
 tmpDir: /tmp
+dockerCertsdir: /etc/docker/certs.d
 gitlabDir: /etc/gitlab
 gitlabData: "/apps/git-data"
 gitlabEE:
   ciVersion: '13.7.1-ee.0'
   runnerVersion: '13.7.0'
 helmVersion:  "3.5.1-1"
+helmfileVersion: "0.135.0"
 
 gitlabAccessToken: "{{ lookup('password', '/dev/null length=20')}}"
 
@@ -23,6 +25,9 @@ registration_token: "{{ 'uvu1zFo5okhrn69uBLApq' if env is search('tst')
                         else  gitlabAccessToken
                        }}"
 gitlabRegistry:
+  host: "{{ 'usctvltstgitlbci01v.curbstone.com' if env is search('tst')
+                else 'usctvlprdgitlbci01v.curbstone.com'
+             }}"
   backup_path: '/var/opt/gitlab/backups'
   Url: "{{ gitlabciUrl }}"
   UrlPort: '5050'

@@ -1,10 +1,11 @@
-#
 # https://localhost:8443/help/user/packages/container_registry/index
 #
+# .kitch3n(1gitl@b
+
 variables:
   DOCKER_REGISTRY: "usctvltstgitlbci01v.curbstone.com:5050"
-  NAMESPACE: "devops"
-  NAME: "it-devops"
+  NAMESPACE: "root"
+  NAME: "ansible-gitlabci"
   CI_DEBUG_TRACE: "true"
 
 build:
@@ -20,3 +21,4 @@ build:
   #   - docker
   only:
     - master
+

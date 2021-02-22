@@ -88,7 +88,7 @@
         autoremove: yes
         state: present
 
-    - name: Download Infra Code Packages
+    - name: Download Terragrunt Binary
       get_url:
         url: "{{ item.url }}"
         dest: "{{ item.dest }}"
@@ -96,5 +96,30 @@
       with_items:
         - { url: 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.25.5/terragrunt_linux_amd64', dest: '{{ localBin }}/terragrunt', mode: '0755' }
       tags: ['installInfraCodePackages']
+
+    - name: Download Install Helmfile Binary
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.dest }}"
+        mode: " {{ item.mode }}"
+      with_items:
+        - { url: 'https://github.com/roboll/helmfile/releases/download/v{{ helmfileVersion }}/helmfile_linux_amd64', dest: '{{ localBin }}/helmfile', mode: '0755' }
+      tags: ['installHelmfile']
+
+    - name: Download fluxcdIO Install Binary
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.dest }}"
+        mode: " {{ item.mode }}"
+      with_items:
+        - { url: ' https://toolkit.fluxcd.io/install.sh', dest: '{{ stagingDir }}/fluxcdIO.sh', mode: '0755' }
+      tags: ['installFlixcdIO']
+
+    - name: Install fluxcdIO
+      shell: |
+        "{{ stagingDir }}/fluxcdIO.sh"
+      ignore_errors: true
+      args:
+        warn: false
 
   when: ansible_os_family == 'Debian'

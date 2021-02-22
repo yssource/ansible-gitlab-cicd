@@ -25,6 +25,23 @@
 #
 #===============================================================================
 
+- name: Create Docker Certs Dir
+  file:
+    dest: "{{ dockerCertsdir }}/{{ gitlabRegistry.host }}:{{ gitlabRegistry.UrlPort }}"
+    state: directory
+    mode: 0750
+    group: docker
+
+- name: Copy GitLab Registry Certs
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    group: "{{ item.group }}"
+    mode: 0400
+  no_log: true
+  with_items:
+    - { src: 'vault/{{ env }}/server.crt', dst: '{{ dockerCertsdir }}/{{ gitlabRegistry.host }}:{{ gitlabRegistry.UrlPort }}/{{ gitlabRegistry.host }}.crt', group: 'docker' }
+
 - name: Copy GitLab-Runner SSL Certs
   copy:
     src: "{{ item.src }}"
@@ -37,7 +54,6 @@
     - { src: 'vault/{{ env }}/ca.crt', dst: /etc/gitlab-runner/certs/ca.crt, owner: 'gitlab-runner', group: 'gitlab-runner' }
     - { src: 'vault/{{ env }}/server.crt', dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt', owner: 'gitlab-runner', group: 'gitlab-runner' }
     - { src: 'vault/{{ env }}/server.key', dst: '/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key', owner: 'gitlab-runner', group: 'gitlab-runner' }
-  # when: ansible_fqdn is search('usctvltstgitlb')
 
 - name: Register gitlab-runner
   shell: |
@@ -45,37 +61,19 @@
          --tls-ca-file /etc/gitlab-runner/certs/ca.crt \
          --tls-cert-file "/etc/gitlab-runner/certs/{{ ansible_fqdn }}.crt" \
          --tls-key-file "/etc/gitlab-runner/certs/{{ ansible_fqdn }}.key" \
-         --tag-list shell  \
+         --tag-list "{{ item.tag }}"  \
          -n -r "{{ registration_token }}"  \
          --url "{{ gitlabciUrl }}" \
          --run-untagged=true  \
          --locked=false  \
          --name="{{ ansible_fqdn }}" \
-         --executor=shell
+         --executor=""{{ item.executor }}""
   ignore_errors: false
   args:
     warn: false
+  with_items:
+    - { name: ansible_fqdn, tag: 'shell', executor: 'shell' }
   register: registerGitLabRunner
-
-#
-#===============================================================================
-#===============================================================================
-# - name: Register gitlab-runner
-#   shell: |
-#      gitlab-runner register \
-#          --tag-list shell  \
-#          -n -r "{{ registration_token }}"  \
-#          --url "{{ gitlabciUrl }}" \
-#          --run-untagged=true  \
-#          --locked=false  \
-#          --name="{{ ansible_fqdn }}" \
-#          --executor=shell
-#   ignore_errors: false
-#   args:
-#     warn: false
-#   register: registerGitLabRunner
-#===============================================================================
-#===============================================================================
 
 - name: Set prepare .gitConfig
   shell: |
@@ -132,4 +130,22 @@
   with_items:
     - { src: runner_ssh_config.j2, dst: /home/gitlab-runner/.ssh/ssh_config, owner: 'gitlab-runner', group: 'gitlab-runner' }
 
+- name: Configure GitLabCI ssh Host Keys
+  block:
+    - name: Are GitLabCI ssh-keys Known to runner {{ ansible_fqdn }}
+      shell:
+        ssh-keygen -F {{ gitlabRegistry.host }} -f ~/.ssh/known_hosts
+      ignore_errors: true
+      args:
+        warn: true
+      register: gitLabCIssh_hostKey
+
+    - name: Add GitLabCI ssh-host key
+      shell:
+        ssh-keyscan {{ gitlabRegistry.host }} >> ~/.ssh/known_hosts
+      when: not gitLabCIssh_hostKey.stdout
+
+  become: yes
+  become_method: sudo
+  become_user: gitlab-runner
 ...
