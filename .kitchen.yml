@@ -72,7 +72,7 @@ suites:
       network:
         - ["private_network", {ip: "10.13.3.7"}]
     provisioner:
-      hosts: usctvltstgitlbrn02v.symbridge.com
+      hosts: usctvltstgitlbrn02v.curbstone.com
       require_ansible_repo: true
       playbook: gitlabrunner.yml
       ansible_vault_password_file: [".kitchenCIvault", ".symtstGTLBCIvault"]
