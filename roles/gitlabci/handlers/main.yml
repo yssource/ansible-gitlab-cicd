@@ -22,4 +22,4 @@
   service:
     name: ufw
     state: restarted
-  when: ansible_os_family == 'Debian'
+  when: "ansible_os_family == 'Debian' and ansible_fqdn is search('usctvltstgitlbci01v')"

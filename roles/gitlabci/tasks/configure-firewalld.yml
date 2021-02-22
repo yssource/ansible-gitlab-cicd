@@ -9,6 +9,8 @@
   with_items:
     - "80/tcp"
     - "443/tcp"
+    - "5000/tcp"
+    - "5050/tcp"
     - "9090/tcp"
     - "6379/tcp"
   when: ansible_fqdn is search('usctvltstgitlbci01v') and ansible_os_family == 'RedHat'
@@ -28,6 +30,8 @@
       with_items:
         - "80"
         - "443"
+        - "5000"
+        - "5050"
         - "9090"
         - "6379"
-      when: ansible_fqdn is search('usctvltstgitlbci01v') and ansible_os_family == 'Debian'
+      when: ansible_hostname is search('usctvltstgitlbci01v') and ansible_os_family == 'Debian'

@@ -1,0 +1,42 @@
+---
+- hosts: localhost
+
+  vars:
+    gitlabRegistry:
+      host: usctvltstgitlbci01v.curbstone.com
+
+
+  tasks:
+
+    #- name: Ensure ssh host key known
+    #  delegate_to: localhost
+    #  lineinfile:
+    #    dest: ~/.ssh/known_hosts
+    #    create: yes
+    #    state: present
+    #    line: "{{ lookup('pipe', 'ssh-keyscan -trsa -p' + ansible_ssh_port + ' ' + ansible_ssh_host) }}"
+
+          
+    - name: Configure GitLabCI Host Keys
+      block:
+        - name: Are GitLabCI ssh-keys Known to runner {{ ansible_fqdn }}
+          shell:
+            ssh-keygen -F {{ gitlabRegistry.host }} -f ~/.ssh/known_hosts
+          ignore_errors: true
+          args: 
+            warn: true
+          register: gitLabCIssh_hostKey
+
+        - debug:
+            msg: "{{ gitLabCIssh_hostKey }}"
+
+        - name: Add GitLabCI ssh-host key
+          shell:
+            ssh-keyscan {{ gitlabRegistry.host }} >> ~/.ssh/known_hosts
+          when: not gitLabCIssh_hostKey.stdout 
+      become: yes
+      become_method: sudo
+      become_user: gitlab-runner
+
+...
+

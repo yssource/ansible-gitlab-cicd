@@ -1,0 +1,63 @@
+---
+- hosts: localhost
+
+  vars:
+    # gitlabAccessToken: "{{ lookup('password', '/dev/null length=20')}}"
+    gitlabAccessToken: "gWezNxQFqPaYcc9Usv_c"
+    gitlabciUrl: "https://usctvltstgitlbci01v.curbstone.com"
+
+  tasks:
+
+      - debug:
+          msg: "GitLabAccessToken is ==> {{ gitlabAccessToken }}"
+
+      - name: Create Personal Access Token
+        shell: |
+         gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: \
+          [:api, :write_repository, :sudo], name: 'root'); token.set_token('{{ gitlabAccessToken }}'); token.save!"
+        ignore_errors: yes
+        args:
+          warn:
+            true
+        async: 120
+        poll: 12
+
+      - name: Display Registetered Runners
+        uri:
+          url:  "{{ gitlabciUrl }}/api/v4/runners/all"
+          validate_certs: no
+          method: GET
+          headers:
+            Authorization: "Bearer {{ gitlabAccessToken }}"
+            Content-Type: "application/json"
+          body_format: json
+          status_code: [201, 200]
+          return_content: yes
+        register: runnersRegistered
+
+      - debug:
+          msg: "{{ runnersRegistered.json }}"
+
+      # - name: Display Existing Groups
+      #   uri:
+      #     url:  "{{ gitlabciUrl }}/api/v4/groups"
+      #     validate_certs: no
+      #     method: GET
+      #     headers:
+      #       Authorization: "Bearer {{ gitlabAccessToken }}"
+      #       Content-Type: "application/json"
+      #     body_format: json
+      #     status_code: [201, 200]
+      #     return_content: yes
+      #   register: createdGroups
+      #
+      # - debug:
+      #     msg: "{{ createdGroups.json[] }}"
+
+
+          # | json_query('msg[*].description') }}"
+          # msg: "{{ runnersRegistered.json.msg.description }}"
+# .json_query('domain.cluster[*].name') }}"
+#
+# (output_text.stdout | from_json).ismaster
+# curl  -sq --cacert /etc/gitlab/ssl/ca.crt --cert /etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.crt --key /etc/gitlab/ssl/usctvltstgitlbci01v.curbstone.com.key --request GET --header "PRIVATE-TOKEN: YZxD7Lq13etsg8GutcZT" "https://usctvltstgitlbci01v.curbstone.com:443/api/v4/runners/all" | jq -r .[]?.description

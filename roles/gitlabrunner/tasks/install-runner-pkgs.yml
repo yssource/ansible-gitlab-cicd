@@ -57,6 +57,7 @@
       notify: "{{ item }}"
       with_items:
         - service restart firewalld
+        - service restart gitlab-runner
   when: ansible_os_family == 'RedHat'
 
 - name: Configure Debian Gitlab-CI Requirements
@@ -68,14 +69,14 @@
           - nodejs
         autoremove: yes
         state: present
-    
+
     - name: Get Debian GitLab Runner Repo
       get_url:
         url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh
         dest: "{{ stagingDir }}/script.gitlab-runner.deb.sh"
         mode: 0755
 
-    - name: Setup Debian GitLab-CE Repository
+    - name: Setup Debian GitLab-EE Repository
       shell: "{{ stagingDir }}/script.gitlab-runner.deb.sh"
       ignore_errors: yes
       args:
@@ -84,11 +85,33 @@
     - name: Install Debian GitLab-runner
       apt:
         pkg:
-          - gitlab-runner
+          - gitlab-runner={{ gitlabEE.runnerVersion }}
         update_cache: yes
+      register: installGitLabRunner
+
+    - name: Restart rsyslog
+      service:
+        name: gitlab-runner
+        enabled: true
+        state: started
+    #
+    # TODO:
+    #   Create user groups
+    #
+    # - name: Add gitlab-runner user to sudo group
+    #   user:
+    #     name: gitlab-runner
+    #     group: google-sudoers
+    #     groups: docker
+
+    - name: Add gitlab-runner user to Docker group
+      user:
+        name: gitlab-runner
+        groups: docker
 
       notify: "{{ item }}"
       with_items:
         - service restart ufw
+        - service restart gitlab-runner
 
   when: ansible_os_family == 'Debian'

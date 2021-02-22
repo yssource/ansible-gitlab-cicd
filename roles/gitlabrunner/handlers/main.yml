@@ -15,7 +15,13 @@
     name: firewalld
     state: restarted
 
+- name: service restart gitlab-runner
+  service:
+    name: gitlab-runner
+    state: restarted
+
 - name: service restart ufw
   service:
     name: ufw
     state: restarted
+  when: "ansible_os_family == 'Debian' and ansible_fqdn is search('usctvltstgitlbrn')"

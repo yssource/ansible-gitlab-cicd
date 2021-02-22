@@ -3,12 +3,15 @@
   tags: always
   set_fact:
     env: "{{ ansible_hostname.split('usctvl')[1] }}"
-    local_env: "{{ ansible_hostname.split('usctvl(tst|dev|qa|stg|prd)') }}"
-  when: ansible_hostname is search('usctvl(tst|dev|qa|stg|prd)')
+    local_env: "{{ ansible_hostname.split('usctvl(tst|dev|uat|prd)') }}"
+  when: ansible_hostname is search('usctvl(tst|dev|uat|prd)')
 
 - debug:
-    msg: "Host environment is : {{ env }} HostName is {{ local_env }}"
+    msg: "Host environment is : {{ env[0:3] }} HostName is {{ local_env }}"
+
+- set_fact:
+    env: "{{ env[0:3] }}"
 
 - assert:
     that:
-      - env is search('tst|dev|qa|stg|prd')
+      - env is search('tst|dev|uat|prd')
