@@ -64,12 +64,6 @@
         - 'https://github.com/zendesk/helm-secrets'
       when: helmBinary.stat.exists
 
-    # - name: Initialize kubectl
-    #   become_user: gitlab-runner
-    #   shell: |
-    #     gcloud container clusters get-credentials atomyze-acn --region europe-west4 --project atomyze-acn
-    #     kubectl config rename-context gke_atomyze-acn_europe-west4_atomyze-acn atomyze-acn
-
     - name: Add HashiCorp GPG Key
       apt_key:
         url: https://apt.releases.hashicorp.com/gpg
